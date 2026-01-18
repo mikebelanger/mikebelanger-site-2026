@@ -285,9 +285,28 @@ section > p {
     font-size: 0.95rem;
 }
 
-.education-item .years {
+.education-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.education-item .dates {
     font-size: 0.9rem;
     color: var(--color-text-muted);
+}
+
+.education-item ul {
+    margin-left: 1.25rem;
+    margin-top: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.education-item li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
 /* Certifications list */
