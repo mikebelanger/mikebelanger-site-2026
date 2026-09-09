@@ -1,2 +1,11 @@
 # Home
 
+## Pages
+
+- [Hi, I'm Mike](http://127.0.0.1:3000/): Mike Belanger — Full-stack developer based in Ottawa, Canada.
+- [Blog posts](http://127.0.0.1:3000/posts/): Mike Belanger — Full-stack developer based in Ottawa, Canada.
+
+## Blog
+
+- [Mixing instances of parent and child in Crystal](http://127.0.0.1:3000/blog/crystal_oo_types/): A strange error message from the Crystal compiler.
+
