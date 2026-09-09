@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <title>Authors - Home</title>
+  <meta name="description" content="An index of every published blog post.">
+  <title>Blog - Home</title>
   <link rel="icon" type="image/svg+xml" href="http://127.0.0.1:3000/favicon.svg">
   <script>(function(){try{var t=localStorage.getItem("hwaro-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}})()</script>
-  <meta property="og:title" content="Authors">
+  <meta property="og:title" content="Blog">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://127.0.0.1:3000/authors/">
-  <meta property="og:description" content="">
+  <meta property="og:url" content="http://127.0.0.1:3000/blog/">
+  <meta property="og:description" content="An index of every published blog post.">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Authors">
-  <meta name="twitter:description" content="">
-  <link rel="canonical" href="http://127.0.0.1:3000/authors/">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Authors","url":"http://127.0.0.1:3000/authors/"}</script>
+  <meta name="twitter:title" content="Blog">
+  <meta name="twitter:description" content="An index of every published blog post.">
+  <link rel="canonical" href="http://127.0.0.1:3000/blog/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Blog","url":"http://127.0.0.1:3000/blog/","description":"An index of every published blog post."}</script>
   
   
   
@@ -26,7 +26,7 @@
   
   
 </head>
-<body data-section="authors">
+<body data-section="blog">
 <header class="slim">
     <nav class="stack">
         <a href="http://127.0.0.1:3000/" class="logo">Home</a>
@@ -35,7 +35,7 @@
            register a page/section into "main" from its own front
            matter with `menus = ["main"]` — no template edit
            required either way. -->
-      <a href="/blog/">Blog</a>
+      <a href="/blog/" aria-current="page">Blog</a>
     </nav>
     <div class="search-and-theme">
       <!---->
@@ -61,11 +61,30 @@
   </div>
 </div>
   <main id="main">
-    <h1>Authors</h1>
-    <p class="taxonomy-desc">Browse all terms in this taxonomy:</p>
-    <ul class="taxonomy-terms">
-  <li><a href="http://127.0.0.1:3000/authors/mike/">mike</a></li>
-</ul>
+      <hgroup>
+    <h1>Blog</h1>
+    <p>Browse all blog posts below.</p>
+
+      </hgroup>
+
+    <section class="home-latest" aria-labelledby="home-latest-title">
+      <ul class="post-list">
+        
+        
+          <li class="post-item">
+            <hgroup class="post-item-body">
+              <h3 class="post-title">
+                  <a href="http://127.0.0.1:3000/blog/crystal_oo_types/">Mixing instances of parent and child in Crystal</a>
+              </h3>
+              <time class="post-date" datetime="2023-12-14">2023-12-14</time>
+              <p class="post-excerpt">A strange error message from the Crystal compiler.</p>
+            </>
+          </li>
+        
+        
+      </ul>
+      <p class="home-more"><a href="http://127.0.0.1:3000/posts/">View all posts</a></p>
+    </section>
 
   </main>
     <footer class="blog-footer">
