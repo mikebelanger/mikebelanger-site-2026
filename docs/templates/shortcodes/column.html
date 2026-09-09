@@ -1,0 +1,7 @@
+{% if id %}
+<section id={{ id }}>
+{% else %}
+<section>
+{% endif %}
+    {{ body | markdownify }}
+</section>

@@ -1,0 +1,9 @@
+{% include "header.html" %}
+{% include "partials/nav.html" %}
+{% include "partials/search.html" %}
+  <main id="main">
+    <h1>{{ page.title | e }}</h1>
+    <p class="taxonomy-desc">Browse all terms in this taxonomy:</p>
+    {{ content }}
+  </main>
+{% include "footer.html" %}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Home - Tags: rails</title>
+    <link>http://127.0.0.1:3000/tags/rails/</link>
+    <description></description>
+    <atom:link href="http://127.0.0.1:3000/tags/rails/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Thoughts on Lucky</title>
+      <link>http://127.0.0.1:3000/blog/thoughts-on-lucky/</link>
+      <guid>http://127.0.0.1:3000/blog/thoughts-on-lucky/</guid>
+      <description>My thoughts on the Lucky web framework.</description>
+      <content:encoded><![CDATA[<p><a href="https://rubyonrails.org">Rails</a> got popular for a reason. Everyone from junior to senior-level devs could ramp up with Rails pretty fast. My first developer job involved writing Rails applications. I went from knowing nothing about Rails to pushing out bugfixes within weeks, and full-features within months.</p>
+<p>My story isn't unique. Many successful startups got their initial MVP shipped using Rails. You could argue they would have succeeded with any framework, and to some extent, I would agree. If that framework included:</p>
+<ul>
+<li>A CLI for generating clean, conventional code quickly</li>
+<li>A REPL (read: console) for easy debugging and inspection</li>
+<li>Bonus points if the language was concise, relatively boilerplate-free, and allowed developers to focus on business logic.</li>
+</ul>
+<p>Then sure, that framework could work too.</p>
+<p>That said, Rails' language, <a href="https://www.ruby-lang.org/">Ruby</a>, is a double-edged sword. Ruby's syntax hid lots from the developer, which made it look simple.  But hiding all that complexity came at a cost. This cost came in the form of strange, runtime behaviors. It's dynamic typing gave it flexibility, but was nearly impossible to perform any kind of static analysis/linting. This translated to more errors, and the kind of errors you could only see at runtime.</p>
+<p>How to get ahead of those runtime errors? There's a few ways. Automated testing, be it unit, integration or end-to-end, is one way.  But writing tests take valuable time, and rely on the vigilant, impartial developers. Another way, which is easier to enforce, is to use a statically-typed language. Something that doesn't let the developer go ahead until their code achieves some degree of type safety.</p>
+<p>There's certainly no shortage of frameworks like that, from more established ones like <a href="http://127.0.0.1:3000/blog/thoughts-on-lucky/quarkus.io">Quarkus</a> to more bleeding edge ones like <a href="https://loco.rs">Loco</a>.</p>
+<p>Another one is <a href="https://luckyframework.org/">Lucky</a>.</p>
+<p>Lucky is written in a lesser-known language called <a href="https://crystal-lang.org/">Crystal</a>. Crystal's syntax looks almost identical to Ruby's. Object-oriented, elegant. Under the hood, it differs a lot. It's statically-typed, and uses <a href="https://crystal-lang.org/reference/1.21/guides/concurrency.html#channels">CSP-style channels</a> for concurrency (similar to <a href="https://gobyexample.com/channels">Go's</a>). It compiles its code into binaries using the same LLVM-backed system as Rust. So you get speedy programs, static analysis, all while retaining a simple syntax.</p>
+]]></content:encoded>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 +0000</pubDate>
+      <category>crystal</category>
+      <category>lucky</category>
+      <category>rails</category>
+      <category>web</category>
+      <category>general</category>
+    </item>
+  </channel>
+</rss>
