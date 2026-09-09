@@ -34,5 +34,5 @@ jobs:
       - name: Build and Deploy
         uses: hahwul/hwaro@main
         with:
-          build_dir: "docs"
+          build_dir: docs/
           token: ${{ secrets.GITHUB_TOKEN }}
