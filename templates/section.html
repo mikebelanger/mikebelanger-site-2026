@@ -1,0 +1,30 @@
+{% include "header.html" %}
+{% include "partials/nav.html" %}
+{% include "partials/search.html" %}
+  <main id="main">
+      <hgroup>
+    {% if page.title is present %}<h1>{{ page.title | e }}</h1>{% endif %}
+    {{ content }}
+      </hgroup>
+
+    <section class="home-latest" aria-labelledby="home-latest-title">
+      <ul class="post-list">
+        {% for p in site.pages | selectattr("date") | rejectattr("is_index") | rejectattr("draft") | selectattr("language", "equalto", page_language) | sort(attribute="date", reverse=true) %}
+        {% if loop.index <= 5 %}
+          <li class="post-item">
+            <hgroup class="post-item-body">
+              <h3 class="post-title">
+                  <a href="{{ base_url }}{{ p.url }}">{{ p.title | e }}</a>
+              </h3>
+              <time class="post-date" datetime="{{ p.date }}">{{ p.date }}</time>
+              {% if p.description %}<p class="post-excerpt">{{ p.description | e }}</p>{% endif %}
+            </>
+          </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      <p class="home-more"><a href="{{ base_url }}{{ lang_prefix }}/posts/">View all posts</a></p>
+    </section>
+
+  </main>
+{% include "footer.html" %}

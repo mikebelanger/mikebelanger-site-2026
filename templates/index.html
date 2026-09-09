@@ -1,0 +1,12 @@
+{% include "header.html" %}
+{% include "partials/nav.html" %}
+{% include "partials/search.html" %}
+  <main id="main">
+    <header class="home-hero">
+    </header>
+        {% if content %}
+          {{ content }}
+      {% endif %}
+
+  </main>
+{% include "footer.html" %}

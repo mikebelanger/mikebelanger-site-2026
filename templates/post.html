@@ -1,0 +1,83 @@
+{% include "header.html" %}
+{% include "partials/nav.html" %}
+{% include "partials/search.html" %}
+<div class="reading-progress" aria-hidden="true"></div>
+  <main id="main">
+    <article class="post">
+      <header class="post-header">
+          <hgroup>
+              <h1>{{ page.title | e }}</h1>
+              <div class="post-meta">
+                  <time datetime="{{ page.date }}">{{ page.date }}</time>
+          {% if page.reading_time %}<span class="post-meta-sep">·</span> <span class="post-reading-time">{{ page.reading_time }} min read</span>{% endif %}
+              </div>
+              <hr>
+
+          </hgroup>
+{% if page.tags %}
+<div class="post-tags">
+  {% for t in page.tags %}<a class="tag" href="{{ get_taxonomy_url(kind='tags', term=t) }}">{{ t | e }}</a>{% endfor %}
+</div>
+{% endif %}
+      </header>
+      <div class="post-content">
+        {{ content }}
+      </div>
+
+      {# Series nav walks `series_pages` (ordered by series_weight)
+         via the 1-based `series_index`, NOT page.lower/page.higher
+         — those are the section's flat date-ordered neighbours, so
+         they ordered chapters by date and even linked non-series
+         posts. #}
+      {# Guard on `series_pages` too: with [series] disabled (or a
+         single-post series) the engine never populates series_pages,
+         so without this the nav rendered as an orphan box carrying
+         only the series name and no prev/next links. #}
+      {% if page.series and page.series_pages %}
+      <nav class="series-nav" aria-label="Series navigation">
+        {% if page.series_index > 1 %}
+        <a href="{{ base_url }}{{ page.series_pages[page.series_index - 2].url }}" class="series-prev" rel="prev">← {{ page.series_pages[page.series_index - 2].title | e }}</a>
+        {% endif %}
+        <span class="series-name">{{ page.series | e }}</span>
+        {% if page.series_index < (page.series_pages | length) %}
+        <a href="{{ base_url }}{{ page.series_pages[page.series_index].url }}" class="series-next" rel="next">{{ page.series_pages[page.series_index].title | e }} →</a>
+        {% endif %}
+      </nav>
+      {% endif %}
+
+      {# Related posts (shown when [related] is enabled and matches exist). #}
+      {% if page.related_posts %}
+      <aside class="related-posts" aria-label="Related posts">
+        <h2 class="related-title">Related posts</h2>
+        <ul>
+          {% for r in page.related_posts %}
+          <li><a href="{{ base_url }}{{ r.url }}">{{ r.title | e }}</a></li>
+          {% endfor %}
+        </ul>
+      </aside>
+      {% endif %}
+
+      {# Older/newer neighbours. page.lower/page.higher are the
+         flat reading chain, which for a date-sorted feed runs
+         newest to oldest: lower is the newer post, higher the
+         older one. Both links are guarded to stay inside this
+         post's section and to skip _index. #}
+      {% if (page.lower and page.lower.section == page.section and not page.lower.is_index) or (page.higher and page.higher.section == page.section and not page.higher.is_index) %}
+      <nav class="post-nav" aria-label="More posts">
+        {% if page.lower and page.lower.section == page.section and not page.lower.is_index %}
+        <a class="post-nav-link post-nav-prev" href="{{ base_url }}{{ page.lower.url }}" rel="prev">
+          <span class="post-nav-label">(Newer)</span>
+          <span class="post-nav-title">{{ page.lower.title | e }}</span>
+        </a>
+        {% endif %}
+        {% if page.higher and page.higher.section == page.section and not page.higher.is_index %}
+        <a class="post-nav-link post-nav-next" href="{{ base_url }}{{ page.higher.url }}" rel="next">
+          <span class="post-nav-label">(Older)</span>
+          <span class="post-nav-title">{{ page.higher.title | e }}</span>
+        </a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </article>
+  </main>
+{% include "footer.html" %}

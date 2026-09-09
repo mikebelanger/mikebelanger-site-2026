@@ -1,0 +1,30 @@
+<header class="slim">
+    <nav class="stack">
+        <a href="{{ base_url }}{{ lang_prefix }}/" class="logo">{{ site.title | e }}</a>
+
+      <!-- Add/reorder links via [[menus.main]] in config.toml, or
+           register a page/section into "main" from its own front
+           matter with `menus = ["main"]` — no template edit
+           required either way. -->
+      {% for item in get_menu(name="main") %}<a href="{{ item.href }}"{% if item.url | active_path %} aria-current="page"{% endif %}>{{ item.name | e }}</a>{% endfor %}
+    </nav>
+    <div class="search-and-theme">
+      <!--{% if page.translations | length > 0 %}
+      <nav class="lang-switcher" aria-label="Language">
+        {% for t in page.translations %}
+        <a href="{{ base_url }}{{ t.url }}" hreflang="{{ t.code }}"{% if t.is_current %} aria-current="true"{% endif %}>{{ t.code | upper }}</a>
+        {% endfor %}
+      </nav>
+      {% endif %}-->
+      <button class="search-trigger outline secondary" onclick="openSearch()" title="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search</span>
+        <kbd>&#8984;K</kbd>
+      </button>
+      <button class="theme-toggle outline secondary" type="button" data-mode="auto" aria-label="Theme: auto" title="Theme: auto — click to switch">
+  <svg class="tt-auto" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+  <svg class="tt-light" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 .9v2M8 13.1v2M.9 8h2M13.1 8h2M2.98 2.98l1.42 1.42M11.6 11.6l1.42 1.42M13.02 2.98L11.6 4.4M4.4 11.6l-1.42 1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  <svg class="tt-dark" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 9.9A5.8 5.8 0 0 1 6.1 2.6a5.8 5.8 0 1 0 7.3 7.3z" fill="currentColor"/></svg>
+</button>
+    </div>
+</header>
