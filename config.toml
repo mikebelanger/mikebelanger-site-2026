@@ -1,5 +1,5 @@
 title = "Home"
-base_url = "https://mikebelanger.github.io"
+base_url = "https://mikebelanger.ca"
 [plugins]
 processors = ["markdown"]
 
@@ -64,3 +64,8 @@ footnotes = true
 mermaid = false        # Render ```mermaid code blocks as diagrams (loads mermaid.js)
 math = false           # Inline ($...$) and block ($$...$$) math (loads math_engine)
 math_engine = "katex"  # "katex" or "mathjax"
+
+[deployment]
+target = "prod"
+source_dir = "public"
+confirm = false
