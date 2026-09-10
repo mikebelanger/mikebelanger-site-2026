@@ -656,21 +656,34 @@ section#contact {
 }
 
 @media screen and (width <= 500px) {
+    table {
+        --pico-spacing: 0.25rem;
+        font-size: small;
+    }
+
     main#main {
         padding-left: var(--pico-block-spacing-horizontal) !important;
         padding-right: var(--pico-block-spacing-horizontal) !important;
     }
+    section {
+        margin-bottom: unset;
+    }
+
     section#intro > img {
         width: 200px;
         height: auto;
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-size: 1rem !important;
+        font-size: smaller !important;
     }
 
-    p, li, code, span {
-        font-size: 0.7rem !important;
+    p {
+        font-size: 0.8rem !important;
+    }
+
+    li, code, span {
+        font-size: 0.6rem !important;
     }
 
     .stack {
