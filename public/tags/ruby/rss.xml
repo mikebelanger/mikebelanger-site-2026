@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Home - Tags: lucky</title>
-    <link>http://127.0.0.1:3000/tags/lucky/</link>
+    <title>Home - Tags: ruby</title>
+    <link>http://127.0.0.1:3000/tags/ruby/</link>
     <description></description>
-    <atom:link href="http://127.0.0.1:3000/tags/lucky/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://127.0.0.1:3000/tags/ruby/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Rewrite that Rails app, the 2026 edition</title>
       <link>http://127.0.0.1:3000/blog/rewrite_that_rails_app/</link>

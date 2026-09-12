@@ -1,7 +1,7 @@
 +++
 title = "Mixing instances of parent and child in Crystal"
 date = "2023-12-14"
-tags = ["crystal", "lucky"]
+tags = ["crystal"]
 categories = ["general"]
 authors = ["mike"]
 description = "A strange error message from the Crystal compiler."
