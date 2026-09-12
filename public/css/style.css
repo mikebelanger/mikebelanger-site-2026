@@ -662,6 +662,11 @@ section#contact {
 }
 
 @media screen and (width <= 500px) {
+    table {
+        --pico-spacing: 0.25rem;
+        font-size: small;
+    }
+
     main#main {
         padding-left: var(--pico-block-spacing-horizontal) !important;
         padding-right: var(--pico-block-spacing-horizontal) !important;
@@ -675,16 +680,20 @@ section#contact {
         height: auto;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h4, h5, h6 {
         font-size: smaller !important;
     }
 
     p {
-        font-size: 0.8rem !important;
+        font-size: 0.7rem;
     }
 
-    li, code, span {
-        font-size: 0.5rem !important;
+    code, span {
+        font-size: 0.6rem !important;
+    }
+
+    li {
+        font-size: 0.8rem !important;
     }
 
     .stack {
