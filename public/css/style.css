@@ -46,6 +46,8 @@
     --pico-text-selection-color: color-mix(in srgb, var(--pico-primary), 50% transparent) !important;
     --pico-primary-focus: color-mix(in srgb, var(--pico-primary), 90% transparent) !important;
 
+    --pico-border-width: 2px;
+
     --pico-font-size: 130%;
 
     h1, h2, h3 {
@@ -184,17 +186,22 @@ nav.stack {
     gap: 0.5rem;
 }
 
-.search-and-theme > button {
+.search-and-theme > button,
+.contact-buttons > a {
     border-style: solid;
     border-radius: 10px;
     border-color: var(--pico-muted-border-color) !important;
-    border-width: 2px;
+    border-width: var(--pico-border-width);
     margin: unset;
     height: 2rem;
 }
 
-.search-and-theme > button:hover {
+.search-and-theme > button:hover,
+.contact-buttons > a:hover,
+.search-and-theme > button:hover > kbd{
     border-color: var(--pico-primary-hover-border) !important;
+    color: var(--pico-primary);
+    background: var(--pico-primary-focus);
 }
 
 /* Search trigger */
@@ -241,7 +248,6 @@ nav.stack {
     font-family: inherit;
     line-height: 1rem;
 }
-
 
 header.slim {
     display: flex;
