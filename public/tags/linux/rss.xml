@@ -12,7 +12,7 @@
       <description>An opinionated guide to web dev with Podman</description>
       <content:encoded><![CDATA[<details open>
     <summary role="button" class="secondary outline">Summary</summary>
-    <p><a href="">Podman</a> has a few different ways of managing containers, and this post outlines these different approaches from the perspective of a developer:</p>
+    <p><a href="https://podman.io">Podman</a> provides a number of ways for developers to manage containers:</p>
 <ul>
 <li><a href="#makefiles-and-shell-scripts">Makefiles and shell scripts</a></li>
 <li><a href="#podman-compose">Podman-compose</a></li>
@@ -24,13 +24,13 @@
 </details>
 <h3 id="introduction">Introduction <a class="anchor" href="#introduction" aria-hidden="true">🔗</a></h3>
 <hr />
-<p><a href="">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="">docker</a> substitute:</p>
+<p><a href="https://podman.io">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="https://docker.com">docker</a> substitute:</p>
 <section class="listicle"><ol>
 <li>
 <h6>Licensing</h6>
 </li>
 </ol>
-<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed (basically open-source, free-to-use). If you like using <a href="https://www.docker.com/products/docker-desktop/">docker-desktop</a>, its <a href="https://podman-desktop.io/">podman equivalent</a> is open-source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
+<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed (basically open-source, free-to-use). If you like using <a href="https://www.docker.com/products/docker-desktop/">docker-desktop</a>, its <a href="https://podman-desktop.io/">Podman equivalent</a> is open-source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
 <ol start="2">
 <li>
 <h6>Security</h6>
@@ -42,19 +42,19 @@
 <h6>Deeper integration with systemd</h6>
 </li>
 </ol>
-<p>Your web app is probably running on a server with Linux, and that version of Linux is probably using <a href="https://systemd.io/">systemd</a>. Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including <a href="">Fedora</a>, <a href="">Ubuntu</a>, <a href="">Arch</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
-<p>Some of you may already be used to writing simple systemd configurations to bootstrap a docker process, and might be wondering how podman goes beyond this. The answer to this is <a href="https://www.redhat.com/en/blog/quadlet-podman">quadlets</a>, which this post will expand on later.</p>
+<p>Your web app is probably running on a server with Linux, and that version of Linux is probably using <a href="https://systemd.io/">systemd</a>. Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including <a href="https://fedoraproject.org/">Fedora</a>, <a href="https://ubuntu.com/">Ubuntu</a>, <a href="https://archlinux.org/">Arch</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
+<p>Some of you may already be used to writing simple systemd configurations to bootstrap a docker process, and might be wondering how Podman goes beyond this. The answer to this is <a href="https://www.redhat.com/en/blog/quadlet-podman">Quadlets</a>, which this post will expand on later.</p>
 <ol start="4">
 <li>
 <h6>Pods</h6>
 </li>
 </ol>
 <p>As its name implies, Podman works with sets of <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/assembly_working-with-pods_building-running-and-managing-containers">pods</a>. Although Docker has no equivalent feature, pods aren't specific to Podman either, as <a href="https://kubernetes.io/docs/concepts/workloads/pods/">it took the concept from Kubernetes</a>. Pods allow containers to be grouped together and given their own network namespace. Once containers are grouped into &quot;pods&quot;, those pods can be started/restarted together, like <code>podman pod start my-app</code>.</p>
-<p>This feature is less geared towards developers, and moreso system administrators and devops professionals who manage lots of containers. That said, they aren't onerous to setup, and alleviate developers from some of the tedium associated with spinning up/down large swaths of containers.</p>
+<p>This feature is less geared towards developers, more-so system admins/devops who manage lots of containers. That said, they're easy to setup, and alleviate some of tedium associated with spinning up/down large swaths of containers.</p>
 </section>
 <h3 id="different-approaches-to-managing-podman-containers">Different Approaches to Managing Podman Containers <a class="anchor" href="#different-approaches-to-managing-podman-containers" aria-hidden="true">🔗</a></h3>
 <hr />
-<p>There's a few different approaches to managing podman containers. The first two are fairly conventional, the following three are less well-known, but do have their usage cases.</p>
+<p>I've seen Podman used in a variety of ways, and I'd classify those ways into these categories:</p>
 <ol>
 <li>
 <h4 id="makefiles-and-shell-scripts">Makefiles and shell-scripts <a class="anchor" href="#makefiles-and-shell-scripts" aria-hidden="true">🔗</a></h4>

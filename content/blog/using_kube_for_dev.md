@@ -10,7 +10,7 @@ description = "An opinionated guide to web dev with Podman"
 insert_anchor_links = true
 +++
 {% summary(summary="Summary")  %}
-[Podman]() has a few different ways of managing containers, and this post outlines these different approaches from the perspective of a developer:
+[Podman](https://podman.io) provides a number of ways for developers to manage containers:
 - [Makefiles and shell scripts](#makefiles-and-shell-scripts)
 - [Podman-compose](#podman-compose)
 - [INI-style quadlets](#quadlets-ini-style)
@@ -20,30 +20,31 @@ insert_anchor_links = true
 
 ### Introduction
 ---
-[Podman]() and its affiliated projects can help manage [OCI-compatible containers](https://opencontainers.org/about/overview/) in several different ways, making it more than a [docker]() substitute:
+[Podman](https://podman.io) and its affiliated projects can help manage [OCI-compatible containers](https://opencontainers.org/about/overview/) in several different ways, making it more than a [docker](https://docker.com) substitute:
 
 {% listicle() %}
 1. ###### Licensing
-[Podman](https://podman.io) is Apache-2.0 licensed (basically open-source, free-to-use). If you like using [docker-desktop](https://www.docker.com/products/docker-desktop/), its [podman equivalent](https://podman-desktop.io/) is open-source as well, and won't [ask you to pay if your company gets past a certain size](https://docs.docker.com/subscription-billing/desktop-license/).
+[Podman](https://podman.io) is Apache-2.0 licensed (basically open-source, free-to-use). If you like using [docker-desktop](https://www.docker.com/products/docker-desktop/), its [Podman equivalent](https://podman-desktop.io/) is open-source as well, and won't [ask you to pay if your company gets past a certain size](https://docs.docker.com/subscription-billing/desktop-license/).
 
 2. ###### Security
 Podman allows its containers to be [rootless](https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#). What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker does now have rootless mode, so if rootless is your only attraction, just switch to that. 
 
 3. ###### Deeper integration with systemd
-Your web app is probably running on a server with Linux, and that version of Linux is probably using [systemd](https://systemd.io/). Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including [Fedora](), [Ubuntu](), [Arch](), and many others. Unless your server is running [Slackware](http://www.slackware.com/config/init.php), integrating with systemd is a no-brainer.
+Your web app is probably running on a server with Linux, and that version of Linux is probably using [systemd](https://systemd.io/). Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including [Fedora](https://fedoraproject.org/), [Ubuntu](https://ubuntu.com/), [Arch](https://archlinux.org/), and many others. Unless your server is running [Slackware](http://www.slackware.com/config/init.php), integrating with systemd is a no-brainer.
 
-Some of you may already be used to writing simple systemd configurations to bootstrap a docker process, and might be wondering how podman goes beyond this. The answer to this is [quadlets](https://www.redhat.com/en/blog/quadlet-podman), which this post will expand on later.
+Some of you may already be used to writing simple systemd configurations to bootstrap a docker process, and might be wondering how Podman goes beyond this. The answer to this is [Quadlets](https://www.redhat.com/en/blog/quadlet-podman), which this post will expand on later.
 
 4. ###### Pods
 As its name implies, Podman works with sets of [pods](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/assembly_working-with-pods_building-running-and-managing-containers). Although Docker has no equivalent feature, pods aren't specific to Podman either, as [it took the concept from Kubernetes](https://kubernetes.io/docs/concepts/workloads/pods/). Pods allow containers to be grouped together and given their own network namespace. Once containers are grouped into "pods", those pods can be started/restarted together, like `podman pod start my-app`.
 
-This feature is less geared towards developers, and moreso system administrators and devops professionals who manage lots of containers. That said, they aren't onerous to setup, and alleviate developers from some of the tedium associated with spinning up/down large swaths of containers.
+This feature is less geared towards developers, more-so system admins/devops who manage lots of containers. That said, they're easy to setup, and alleviate some of tedium associated with spinning up/down large swaths of containers.
 
 {% end %}
 
 ### Different Approaches to Managing Podman Containers
 ---
-There's a few different approaches to managing podman containers. The first two are fairly conventional, the following three are less well-known, but do have their usage cases.
+
+I've seen Podman used in a variety of ways, and I'd classify those ways into these categories:
 
 1. #### Makefiles and shell-scripts
 2. #### Podman-Compose
