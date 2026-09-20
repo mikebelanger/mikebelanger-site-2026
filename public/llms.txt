@@ -8,4 +8,5 @@
 ## Blog
 
 - [Mixing instances of parent and child in Crystal](http://127.0.0.1:3000/blog/crystal_oo_types/): A strange error message from the Crystal compiler.
+- [A Developer's Guide to Podman](http://127.0.0.1:3000/blog/using_kube_for_dev/): An opinionated guide to web dev with Podman
 

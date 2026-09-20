@@ -60,6 +60,17 @@
     section#greeting {
         display: flow-root;
     }
+
+    .anchor {
+        opacity: 0.0;
+        display: inline-block;
+    }
+
+    :is(h1, h2, h3, h4, h5, h6):has(.anchor):hover > .anchor {
+        opacity: 1.0;
+        transition: opacity 1s;
+    }
+
 }
 
 /* Code */
@@ -310,8 +321,19 @@ header.post-header {
     border-bottom: unset;
 }
 
-.post-content {
-    margin-top: var(--pico-block-spacing-vertical);
+section.listicle {
+    margin-left: var(--pico-block-spacing-horizontal);
+}
+
+section.listicle > p,
+section.listicle > ol,
+section.listicle > li {
+    margin-left: unset;
+    padding-left: unset;
+}
+
+section.listicle > ol > li > h6 {
+    text-decoration: underline;
 }
 
 /* Search overlay */
@@ -635,6 +657,11 @@ h3#skills {
     clear: both;
 }
 
+header,
+footer {
+    background-color: var(--pico-code-background-color);
+}
+
 footer.blog-footer {
     display: flex;
     flex-direction: row;
@@ -651,6 +678,24 @@ section#contact {
     margin: unset;
 }
 
+details > p,
+details > ul {
+    margin-left: var(--pico-block-spacing-horizontal);
+    margin-right: var(--pico-block-spacing-horizontal);
+    padding-bottom: unset;
+}
+
+details > summary["open=true"] {
+    margin-bottom: 1em !important;
+}
+
+details {
+    border: 1px solid var(--pico-muted-border-color);
+    border-color: color-mix(in srgb, var(--pico-primary) 45%, transparent);
+    background-color: var(--pico-primary-focus);
+    border-radius: var(--pico-border-radius);
+}
+
 @media screen and (width >= 500px) {
     main#main {
         padding-left: 10% !important;
@@ -658,6 +703,10 @@ section#contact {
     }
     section#greeting {
         margin-bottom: unset !important;
+    }
+    details {
+        width: 50%;
+        margin-left: 25%;
     }
 }
 
