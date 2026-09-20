@@ -30,13 +30,13 @@
 <h6>Licensing</h6>
 </li>
 </ol>
-<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed (basically open-source, free-to-use). If you like using <a href="https://www.docker.com/products/docker-desktop/">docker-desktop</a>, its <a href="https://podman-desktop.io/">Podman equivalent</a> is open-source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
+<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed. Basically, its open-source, and can be used by an unlimited number of users for free. If you like using <a href="https://www.docker.com/products/docker-desktop/">docker-desktop</a>, it's <a href="https://podman-desktop.io/">Podman equivalent</a> is free and open-source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
 <ol start="2">
 <li>
 <h6>Security</h6>
 </li>
 </ol>
-<p>Podman allows its containers to be <a href="https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#">rootless</a>. What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker does now have rootless mode, so if rootless is your only attraction, just switch to that.</p>
+<p>Podman allows its containers to be <a href="https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#">rootless</a>. What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker <a href="https://docs.docker.com/engine/security/rootless/">has rootless mode now too</a>, so if rootless is your only attraction, just switch to that.</p>
 <ol start="3">
 <li>
 <h6>Deeper integration with systemd</h6>

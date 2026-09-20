@@ -24,10 +24,10 @@ insert_anchor_links = true
 
 {% listicle() %}
 1. ###### Licensing
-[Podman](https://podman.io) is Apache-2.0 licensed (basically open-source, free-to-use). If you like using [docker-desktop](https://www.docker.com/products/docker-desktop/), its [Podman equivalent](https://podman-desktop.io/) is open-source as well, and won't [ask you to pay if your company gets past a certain size](https://docs.docker.com/subscription-billing/desktop-license/).
+[Podman](https://podman.io) is Apache-2.0 licensed. Basically, its open-source, and can be used by an unlimited number of users for free. If you like using [docker-desktop](https://www.docker.com/products/docker-desktop/), it's [Podman equivalent](https://podman-desktop.io/) is free and open-source as well, and won't [ask you to pay if your company gets past a certain size](https://docs.docker.com/subscription-billing/desktop-license/).
 
 2. ###### Security
-Podman allows its containers to be [rootless](https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#). What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker does now have rootless mode, so if rootless is your only attraction, just switch to that. 
+Podman allows its containers to be [rootless](https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#). What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker [has rootless mode now too](https://docs.docker.com/engine/security/rootless/), so if rootless is your only attraction, just switch to that. 
 
 3. ###### Deeper integration with systemd
 Your web app is probably running on a server with Linux, and that version of Linux is probably using [systemd](https://systemd.io/). Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including [Fedora](https://fedoraproject.org/), [Ubuntu](https://ubuntu.com/), [Arch](https://archlinux.org/), and many others. Unless your server is running [Slackware](http://www.slackware.com/config/init.php), integrating with systemd is a no-brainer.
