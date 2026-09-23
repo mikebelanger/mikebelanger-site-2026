@@ -9,7 +9,7 @@ description = "Mike Belanger — Full-stack developer based in Ottawa, Canada."
 I'm a web developer. I'm mostly experienced with [React](https://reactjs.org/) on the frontend, and [Ruby on Rails](https://rubyonrails.org/) in the backend. I have a slight lean into geospatial tech.
 Lately, I've been getting into [Crystal](https://crystal-lang.org/) and [Rust](https://rust-lang.org/).
 {% end %}
----
+
 ### Skills
 ---
 | Category | Skills |

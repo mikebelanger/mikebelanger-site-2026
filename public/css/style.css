@@ -190,8 +190,8 @@ nav.stack {
 .contact-buttons > a {
     border-style: solid;
     border-radius: 10px;
-    border-color: var(--pico-muted-border-color) !important;
-    border-width: var(--pico-border-width);
+    border-color: var(--pico-secondary) !important;
+    border-width: 1px;
     margin: unset;
     height: 2rem;
 }
