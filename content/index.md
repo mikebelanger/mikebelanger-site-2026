@@ -10,17 +10,6 @@ I'm a full-stack developer working in geospatial — [OpenLayers](https://openla
 
 I came to software from a [cognitive science](https://carleton.ca/cognitivescience/bachelors-of-cognitive-science/) degree, working on attention models and eye-tracking.
 {% end %}
-
-## Skills
----
-| Category | Skills |
-|----------|--------|
-| Frontend | [React](https://react.dev) & [React Native](https://reactnative.dev), [TypeScript](https://typescriptlang.org), [Angular](https://angular.dev), [Redux](https://redux.js.org) |
-| Backend | [Node.js](https://nodejs.org), [Python](https://python.org), [Ruby on Rails](https://rubyonrails.org), [REST APIs](https://restfulapi.net) |
-| Testing & Tools | [Cypress](https://cypress.io), [Puppeteer](https://pptr.dev), [Vitest](https://vitest.dev) |
-| Geospatial | [OpenLayers](https://openlayers.org), [Leaflet](https://leafletjs.com), [QGIS](https://qgis.org) |
-| Containerization | [Docker](https://docker.com) & [Podman](https://podman.io) |
-
 ## Experience
 ---
 {% hgroup() %}
