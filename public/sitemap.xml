@@ -13,12 +13,12 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://127.0.0.1:3000/</loc>
+    <loc>http://127.0.0.1:3000/posts/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://127.0.0.1:3000/posts/</loc>
+    <loc>http://127.0.0.1:3000/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
