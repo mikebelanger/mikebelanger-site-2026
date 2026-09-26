@@ -20,7 +20,7 @@
     }
 
     --pico-font-weight: 300;
-    --pico-font-size: 120%;
+    --pico-font-size: 100%;
 
     button {
       --pico-font-weight: 500;
@@ -48,11 +48,11 @@
 
     --pico-border-width: 2px;
 
-    --pico-font-size: 130%;
+    --pico-font-size: 105%;
 
     h1, h2, h3 {
         --pico-font-weight: 300;
-        --pico-font-size: 140%;
+        --pico-font-size: 130%;
     }
 
     h6 {
@@ -292,6 +292,10 @@ hr {
 
 h3 {
     margin: unset;
+}
+
+.post-content > ol {
+    padding-left: 0;
 }
 
 .post-tags {

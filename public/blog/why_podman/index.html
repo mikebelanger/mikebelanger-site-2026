@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <title>Tags: podman - Home</title>
+  <meta name="description" content="My experiences with using Podman">
+  <title>Why Podman? - Home</title>
   <link rel="icon" type="image/svg+xml" href="http://127.0.0.1:3000/favicon.svg">
   <script>(function(){try{var t=localStorage.getItem("hwaro-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}})()</script>
-  <meta property="og:title" content="Tags: podman">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="http://127.0.0.1:3000/tags/podman/">
-  <meta property="og:description" content="">
+  <meta property="og:title" content="Why Podman?">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="http://127.0.0.1:3000/blog/why_podman/">
+  <meta property="og:description" content="My experiences with using Podman">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Tags: podman">
-  <meta name="twitter:description" content="">
-  <link rel="canonical" href="http://127.0.0.1:3000/tags/podman/">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Tags: podman","url":"http://127.0.0.1:3000/tags/podman/"}</script>
+  <meta name="twitter:title" content="Why Podman?">
+  <meta name="twitter:description" content="My experiences with using Podman">
+  <link rel="canonical" href="http://127.0.0.1:3000/blog/why_podman/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Why Podman?","url":"http://127.0.0.1:3000/blog/why_podman/","datePublished":"2026-09-12T00:00:00-04:00","description":"My experiences with using Podman","author":{"@type":"Person","name":"mike"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"http://127.0.0.1:3000/"},{"@type":"ListItem","position":2,"name":"Blog","item":"http://127.0.0.1:3000/blog/"},{"@type":"ListItem","position":3,"name":"Why Podman?"}]}</script>
   
   
   
@@ -26,7 +27,7 @@
   
   
 </head>
-<body data-section="tags">
+<body data-section="blog">
 <header class="slim">
     <nav class="stack">
         <a href="http://127.0.0.1:3000/" class="logo">Home</a>
@@ -60,14 +61,83 @@
     <div class="search-results" id="searchResults"></div>
   </div>
 </div>
+<div class="reading-progress" aria-hidden="true"></div>
   <main id="main">
-    <h1>Tags: podman</h1>
-    <p class="taxonomy-desc">Posts tagged with this term:</p>
-    <ul class="taxonomy-pages">
-  <li><a href="http://127.0.0.1:3000/blog/ini_quadlets_dev/">A Developers Guide to Podman Quadlets</a></li>
-  <li><a href="http://127.0.0.1:3000/blog/why_podman/">Why Podman?</a></li>
-</ul>
+    <article class="post">
+      <header class="post-header">
+          <hgroup>
+              <h1>Why Podman?</h1>
+              <hr>
+              <div class="post-meta">
+                  <time datetime="2026-09-12">2026-09-12</time>
+          <span class="post-meta-sep">·</span> <span class="post-reading-time">3 min read</span>
+              </div>
+              
+              <div class="post-tags">
+                <a class="tag" href="http://127.0.0.1:3000/tags/podman/">podman</a><a class="tag" href="http://127.0.0.1:3000/tags/web/">web</a><a class="tag" href="http://127.0.0.1:3000/tags/linux/">linux</a>
+              </div>
+              
 
+          </hgroup>
+      </header>
+      <div class="post-content">
+        <p><a href="https://podman.io">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="https://docker.com">docker</a> substitute:</p>
+<section class="listicle"><ol>
+<li>
+<h6>Licensing</h6>
+</li>
+</ol>
+<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed. Basically, its open-source, and can be used by an unlimited number of users for free. If you like using <a href="https://www.docker.com/products/docker-desktop/">docker-desktop</a>, it's <a href="https://podman-desktop.io/">Podman equivalent</a> is free and open-source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
+<ol start="2">
+<li>
+<h6>Security</h6>
+</li>
+</ol>
+<p>Podman allows its containers to be <a href="https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#">rootless</a>. What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker <a href="https://docs.docker.com/engine/security/rootless/">has rootless mode now too</a>, so if rootless is your only attraction, just switch to that.</p>
+<ol start="3">
+<li>
+<h6>An easier path into Kubernetes and SystemD</h6>
+</li>
+</ol>
+<p>The name &quot;Quadlet&quot; was humorously inspired by the idea of <a href="https://archive.fosdem.org/2025/schedule/event/fosdem-2025-5383-running-containers-under-systemd-exploring-podman-quadlet/#:~:text=The%20name%20comes,supported%20to%20deploy">&quot;squashing a Kubernetes kube&quot;</a>, as that was the main intent behind Podmans's <a href="">Quadlet</a> feature. In other words, bring Kubernetes &quot;Pods&quot; without all the complexity that usually comes with Kubernetes.</p>
+<p>Quadlets facilitate integrating with <a href="https://systemd.io/">systemd</a> as well. Why bother integrating with systemd?  Your web app is probably running on a server with Linux, and that version of Linux is probably using systemd. Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including <a href="https://fedoraproject.org/">Fedora</a>, <a href="https://ubuntu.com/">Ubuntu</a>, <a href="https://archlinux.org/">Arch</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
+<ol start="4">
+<li>
+<h6>Pods</h6>
+</li>
+</ol>
+<p>As its name implies, Podman works with sets of <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/assembly_working-with-pods_building-running-and-managing-containers">pods</a>. Although Docker has no equivalent feature, pods aren't specific to Podman either, as <a href="https://kubernetes.io/docs/concepts/workloads/pods/">it took the concept from Kubernetes</a>. Pods allow containers to be grouped together and given their own network namespace. Once containers are grouped into &quot;pods&quot;, those pods can be started/restarted together, like <code>podman pod start my-app</code>.</p>
+<p>This feature is less geared towards developers, more-so system admins/devops who manage lots of containers. That said, they're easy to setup, and alleviate some of tedium associated with spinning up/down large swaths of containers.</p>
+</section>
+<p>I've been using Podman for a few years now, and overall I've found it a completely acceptable replacement for Docker. That said, I've found most of the tutorials/resources(and subsequently, AI) have described Podman from a more system-admin/devops workflow, not a web developer workflow. So in the next few posts, I'm going to outline some ways I've found to work with Podman containers. Some of them will be fairly familiar (like <a href="https://docs.podman.io/en/latest/markdown/podman-compose.1.html">podman-compose</a>, while others are much newer (like a <a href="https://www.redhat.com/en/blog/multi-container-application-podman-quadlet">kubernetes-style &quot;kube&quot; file</a>).</p>
+
+      </div>
+
+      
+      
+      
+
+      
+      
+
+      
+      
+      <nav class="post-nav" aria-label="More posts">
+        
+        <a class="post-nav-link post-nav-prev" href="http://127.0.0.1:3000/blog/ini_quadlets_dev/" rel="prev">
+          <span class="post-nav-label">(Newer)</span>
+          <span class="post-nav-title">A Developers Guide to Podman Quadlets</span>
+        </a>
+        
+        
+        <a class="post-nav-link post-nav-next" href="http://127.0.0.1:3000/blog/crystal_oo_types/" rel="next">
+          <span class="post-nav-label">(Older)</span>
+          <span class="post-nav-title">Mixing instances of parent and child in Crystal</span>
+        </a>
+        
+      </nav>
+      
+    </article>
   </main>
     <footer class="blog-footer">
       <p>Powered by <a href="https://github.com/hahwul/hwaro">Hwaro</a></p>

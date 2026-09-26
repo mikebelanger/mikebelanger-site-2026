@@ -6,25 +6,86 @@
     <description></description>
     <atom:link href="http://127.0.0.1:3000/tags/podman/rss.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>A Developer&apos;s Guide to Podman</title>
-      <link>http://127.0.0.1:3000/blog/using_kube_for_dev/</link>
-      <guid>http://127.0.0.1:3000/blog/using_kube_for_dev/</guid>
-      <description>An opinionated guide to web dev with Podman</description>
-      <content:encoded><![CDATA[<details open>
-    <summary role="button" class="secondary outline">Summary</summary>
-    <p><a href="https://podman.io">Podman</a> provides a number of ways for developers to manage containers:</p>
-<ul>
-<li><a href="#makefiles-and-shell-scripts">Makefiles and shell scripts</a></li>
-<li><a href="#podman-compose">Podman-compose</a></li>
-<li><a href="#quadlets-ini-style">INI-style quadlets</a></li>
-<li><a href="#quadlets-kubernetes-kube-style">Kubernetes-style quadlets</a></li>
-<li><a href="#ansible">Ansible</a></li>
-</ul>
+      <title>A Developers Guide to Podman Quadlets</title>
+      <link>http://127.0.0.1:3000/blog/ini_quadlets_dev/</link>
+      <guid>http://127.0.0.1:3000/blog/ini_quadlets_dev/</guid>
+      <description>A Quick Overview of Using Podman Quadlets</description>
+      <content:encoded><![CDATA[<p>Here's the overall quadlet setup for a nodejs app:</p>
+<pre data-copy="true"><code class="language-sh hljs">├── app
+│   ├── index.js
+│   ├── node_modules
+│   ├── package.json
+│   └── package-lock.json
+├── containers
+│   ├── example-app.container
+│   └── example-app.pod
+└── update-containers.sh
+</code></pre>
+<p>The main benefit of using <a href="https://en.wikipedia.org/wiki/INI_file">INI-style</a> Quadlets are their familiarity and clarity. System admins and UNIX greybeards alike will find the syntax familiar. The more Quadlet-specific terms can clarify where/how containers integrate:</p>
+<p><code>example-app.container</code>:</p>
+<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
+<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">Example Node.js app</span>
 
-</details>
-<h3 id="introduction">Introduction <a class="anchor" href="#introduction" aria-hidden="true">🔗</a></h3>
-<hr />
-<p><a href="https://podman.io">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="https://docker.com">docker</a> substitute:</p>
+<span class="hljs-keyword">[Container]</span>
+<span class="hljs-attr">Pod</span><span class="hljs-operator">=</span><span class="hljs-string">example-app.pod</span>
+<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">docker.io/node:24</span>
+<span class="hljs-attr">WorkingDir</span><span class="hljs-operator">=</span><span class="hljs-string">/app</span>
+<span class="hljs-attr">Exec</span><span class="hljs-operator">=</span><span class="hljs-string">/bin/sh -c &quot;npm i || node --watch index.js&quot;</span>
+<span class="hljs-attr">Volume</span><span class="hljs-operator">=</span><span class="hljs-string">../app:/app:Z</span>
+
+<span class="hljs-keyword">[Install]</span>
+<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">multi-user.target</span>
+
+</code></pre>
+<p><code>example-app.pod</code>:</p>
+<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
+<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">Example app pod</span>
+
+<span class="hljs-keyword">[Pod]</span>
+<span class="hljs-attr">PodName</span><span class="hljs-operator">=</span><span class="hljs-string">example-app</span>
+<span class="hljs-attr">ExitPolicy</span><span class="hljs-operator">=</span><span class="hljs-string">stop</span>
+<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">3002:3002</span>
+
+<span class="hljs-keyword">[Install]</span>
+<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
+</code></pre>
+<h5 id="gotchas">Gotchas: <a class="anchor" href="#gotchas" aria-hidden="true">🔗</a></h5>
+<section class="listicle"><ol>
+<li>
+<h5>These aren't the actual files systemd runs</h5>
+</li>
+</ol>
+<p>These files get translated (the technical term is &quot;lowered&quot;) into other, <em>actual</em> systemd files for systemd to bootstrap. I like to think of the relationship quadlet files to systemd files like the relationship of SASS files to CSS, or React's JSX files to JS. While the syntax of quadlets is similar to what it gets compiled into, it isn't identical. To anyone less familiar with &quot;pure&quot; systemd, its difficult to distinguish between quadlet and systemd-specific declarations.</p>
+<ol start="2">
+<li>
+<h5>They need to be in specific subdirectories</h5>
+</li>
+</ol>
+<p>As someone used to <code>git clone</code>ing a repo and then doing <code>docker-compose up</code>, I found this one particularly confusing. Systemd ships with most OSs with a predefined set of paths that it looks to discover new services. Quadlets continue that trend, and have their own particular path it looks for.</p>
+<p>Fortunately, your application code <em>can</em> live in any directory you'd like, provided that directory gets symlinked over into one of the quadlet discovery paths. A quick <code>ln -sfn &quot;$PWD/containers&quot; &quot;$QUADLET_DIR/ini_style_quadlet&quot;</code> (super intuitive, I know) should  do the trick.</p>
+</section>
+<h4 id="typical-dev-workflow">Typical Dev Workflow: <a class="anchor" href="#typical-dev-workflow" aria-hidden="true">🔗</a></h4>
+<section class="listicle"><ol>
+<li>Developer clones code repo</li>
+<li>They figure out their systemd discovery path, and symlink their downloaded repo path <em>into</em> that systemd discovery path.</li>
+<li>They spin up the containers via <code>systemctl --user start app-name.service</code></li>
+<li>Add code, commit it in the usual way.</li>
+<li>To stop the service, do <code>podman pod stop app-name.service</code>.</li>
+</ol>
+</section>
+]]></content:encoded>
+      <pubDate>Sat, 12 Sep 2026 00:00:00 +0000</pubDate>
+      <category>podman</category>
+      <category>web</category>
+      <category>linux</category>
+      <category>general</category>
+    </item>
+    <item>
+      <title>Why Podman?</title>
+      <link>http://127.0.0.1:3000/blog/why_podman/</link>
+      <guid>http://127.0.0.1:3000/blog/why_podman/</guid>
+      <description>My experiences with using Podman</description>
+      <content:encoded><![CDATA[<p><a href="https://podman.io">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="https://docker.com">docker</a> substitute:</p>
 <section class="listicle"><ol>
 <li>
 <h6>Licensing</h6>
@@ -39,11 +100,11 @@
 <p>Podman allows its containers to be <a href="https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#">rootless</a>. What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, docker <a href="https://docs.docker.com/engine/security/rootless/">has rootless mode now too</a>, so if rootless is your only attraction, just switch to that.</p>
 <ol start="3">
 <li>
-<h6>Deeper integration with systemd</h6>
+<h6>An easier path into Kubernetes and SystemD</h6>
 </li>
 </ol>
-<p>Your web app is probably running on a server with Linux, and that version of Linux is probably using <a href="https://systemd.io/">systemd</a>. Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including <a href="https://fedoraproject.org/">Fedora</a>, <a href="https://ubuntu.com/">Ubuntu</a>, <a href="https://archlinux.org/">Arch</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
-<p>Some of you may already be used to writing simple systemd configurations to bootstrap a docker process, and might be wondering how Podman goes beyond this. The answer to this is <a href="https://www.redhat.com/en/blog/quadlet-podman">Quadlets</a>, which this post will expand on later.</p>
+<p>The name &quot;Quadlet&quot; was humorously inspired by the idea of <a href="https://archive.fosdem.org/2025/schedule/event/fosdem-2025-5383-running-containers-under-systemd-exploring-podman-quadlet/#:~:text=The%20name%20comes,supported%20to%20deploy">&quot;squashing a Kubernetes kube&quot;</a>, as that was the main intent behind Podmans's <a href="">Quadlet</a> feature. In other words, bring Kubernetes &quot;Pods&quot; without all the complexity that usually comes with Kubernetes.</p>
+<p>Quadlets facilitate integrating with <a href="https://systemd.io/">systemd</a> as well. Why bother integrating with systemd?  Your web app is probably running on a server with Linux, and that version of Linux is probably using systemd. Systemd isn't technically required in Linux, but its the unofficial standard task scheduler for most Linux distros, including <a href="https://fedoraproject.org/">Fedora</a>, <a href="https://ubuntu.com/">Ubuntu</a>, <a href="https://archlinux.org/">Arch</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
 <ol start="4">
 <li>
 <h6>Pods</h6>
@@ -52,208 +113,7 @@
 <p>As its name implies, Podman works with sets of <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/assembly_working-with-pods_building-running-and-managing-containers">pods</a>. Although Docker has no equivalent feature, pods aren't specific to Podman either, as <a href="https://kubernetes.io/docs/concepts/workloads/pods/">it took the concept from Kubernetes</a>. Pods allow containers to be grouped together and given their own network namespace. Once containers are grouped into &quot;pods&quot;, those pods can be started/restarted together, like <code>podman pod start my-app</code>.</p>
 <p>This feature is less geared towards developers, more-so system admins/devops who manage lots of containers. That said, they're easy to setup, and alleviate some of tedium associated with spinning up/down large swaths of containers.</p>
 </section>
-<h3 id="different-approaches-to-managing-podman-containers">Different Approaches to Managing Podman Containers <a class="anchor" href="#different-approaches-to-managing-podman-containers" aria-hidden="true">🔗</a></h3>
-<hr />
-<p>I've seen Podman used in a variety of ways, and I'd classify those ways into these categories:</p>
-<ol>
-<li>
-<h4 id="makefiles-and-shell-scripts">Makefiles and shell-scripts <a class="anchor" href="#makefiles-and-shell-scripts" aria-hidden="true">🔗</a></h4>
-</li>
-<li>
-<h4 id="podman-compose">Podman-Compose <a class="anchor" href="#podman-compose" aria-hidden="true">🔗</a></h4>
-</li>
-<li>
-<h4 id="quadlets-ini-style">Quadlets (INI-style) <a class="anchor" href="#quadlets-ini-style" aria-hidden="true">🔗</a></h4>
-</li>
-<li>
-<h4 id="quadlets-kubernetes-kube-style">Quadlets (Kubernetes-kube style) <a class="anchor" href="#quadlets-kubernetes-kube-style" aria-hidden="true">🔗</a></h4>
-</li>
-<li>
-<h4 id="ansible">Ansible <a class="anchor" href="#ansible" aria-hidden="true">🔗</a></h4>
-</li>
-</ol>
-<p>The typical way of declaring quadlets is through a series of <a href="https://en.wikipedia.org/wiki/INI_file">INI-style</a> files, more or less the same as <a href="https://systemd.io/">systemd</a>:</p>
-<p><code>app-db.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">PostgreSQL for development</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">docker.io/library/postgres:16</span>
-<span class="hljs-attr">ContainerName</span><span class="hljs-operator">=</span><span class="hljs-string">app-db</span>
-<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">5432:5432</span>
-<span class="hljs-attr">Volume</span><span class="hljs-operator">=</span><span class="hljs-string">app-db-data.volume:/var/lib/postgresql/data</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">POSTGRES_PASSWORD=dev</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">Restart</span><span class="hljs-operator">=</span><span class="hljs-string">on-failure</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p>Separately, a volume is declared in its own quadlet file:</p>
-<p><code>app-db-data.volume</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Volume]</span>
-<span class="hljs-attr">VolumeName</span><span class="hljs-operator">=</span><span class="hljs-string">app-db-data</span>
-<span class="hljs-attr">Driver</span><span class="hljs-operator">=</span><span class="hljs-string">local</span>
-</code></pre>
-<p>And a simple application layer ties the pieces together:</p>
-<p><code>app.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">My web application</span>
-<span class="hljs-attr">Requires</span><span class="hljs-operator">=</span><span class="hljs-string">app-db.container</span>
-<span class="hljs-attr">After</span><span class="hljs-operator">=</span><span class="hljs-string">app-db.container</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">localhost/app:latest</span>
-<span class="hljs-attr">ContainerName</span><span class="hljs-operator">=</span><span class="hljs-string">app</span>
-<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">8000:8000</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">DATABASE_URL=postgres://postgres:dev@app-db:5432/dev</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">Restart</span><span class="hljs-operator">=</span><span class="hljs-string">always</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p>As you can see, unlike docker-compose, everything is broken into different files.</p>
-<h2 id="sharing-a-single-env-file">Sharing a single <code>.env</code> file <a class="anchor" href="#sharing-a-single-env-file" aria-hidden="true">🔗</a></h2>
-<p>That split keeps each unit independently managed by systemd, but the same values — the database password, the port — end up hard-coded in several places. A shared <code>.env</code> file cuts down on that repetition:</p>
-<p><code>.env</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-comment"># Database</span>
-<span class="hljs-attr">POSTGRES_USER</span><span class="hljs-operator">=</span><span class="hljs-string">postgres</span>
-<span class="hljs-attr">POSTGRES_PASSWORD</span><span class="hljs-operator">=</span><span class="hljs-string">dev</span>
-<span class="hljs-attr">DB_NAME</span><span class="hljs-operator">=</span><span class="hljs-string">development</span>
-<span class="hljs-attr">DB_PORT</span><span class="hljs-operator">=</span><span class="hljs-string">5432</span>
-
-<span class="hljs-comment"># Application</span>
-<span class="hljs-attr">HOST</span><span class="hljs-operator">=</span><span class="hljs-string">0.0.0.0</span>
-<span class="hljs-attr">PORT</span><span class="hljs-operator">=</span><span class="hljs-string">8000</span>
-</code></pre>
-<p>Keep this file next to your quadlets, under <code>~/.config/containers/systemd/</code>. Load it in each unit's <code>[Service]</code> section and reference the variables with <code>${VAR}</code>:</p>
-<p><code>app-db.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">PostgreSQL for development</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">docker.io/library/postgres:16</span>
-<span class="hljs-attr">ContainerName</span><span class="hljs-operator">=</span><span class="hljs-string">app-db</span>
-<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">${DB_PORT}:${DB_PORT}</span>
-<span class="hljs-attr">Volume</span><span class="hljs-operator">=</span><span class="hljs-string">app-db-data.volume:/var/lib/postgresql/data</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">POSTGRES_PASSWORD=${POSTGRES_PASSWORD}</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">EnvironmentFile</span><span class="hljs-operator">=</span><span class="hljs-string">%h/.config/containers/systemd/.env</span>
-<span class="hljs-attr">Restart</span><span class="hljs-operator">=</span><span class="hljs-string">on-failure</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p><code>app.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">My web application</span>
-<span class="hljs-attr">Requires</span><span class="hljs-operator">=</span><span class="hljs-string">app-db.container</span>
-<span class="hljs-attr">After</span><span class="hljs-operator">=</span><span class="hljs-string">app-db.container</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">localhost/app:latest</span>
-<span class="hljs-attr">ContainerName</span><span class="hljs-operator">=</span><span class="hljs-string">app</span>
-<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">${PORT}:${PORT}</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">HOST=${HOST}</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">PORT=${PORT}</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">DATABASE_URL=postgres://postgres:dev@app-db:${DB_PORT}/dev</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">EnvironmentFile</span><span class="hljs-operator">=</span><span class="hljs-string">%h/.config/containers/systemd/.env</span>
-<span class="hljs-attr">Restart</span><span class="hljs-operator">=</span><span class="hljs-string">always</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p>Quadlet passes the <code>${VAR}</code> references straight into the systemd unit it generates — the <code>ExecStart</code> ends up looking like <code>podman run ... --publish ${PORT}:${PORT} --env DATABASE_URL=postgres://postgres:dev@app-db:${DB_PORT}/dev</code> — and systemd expands them at launch time, using the environment loaded from the file. Define each value once in <code>.env</code>, reference it in every file, and a single edit reconfigures the whole stack. Note that <code>DATABASE_URL</code> is composed in the quadlet file from <code>${DB_PORT}</code>, not stored as a whole in <code>.env</code>.</p>
-<p>A few details worth knowing:</p>
-<ul>
-<li>There are two different keys that look alike. <code>[Service] EnvironmentFile=</code> feeds the host-side environment that systemd expands <code>${VAR}</code> from — that's what makes <code>${PORT}</code> work inside <code>PublishPort=</code> and every other line. <code>[Container] EnvironmentFile=</code> is a separate, equally valid key that maps to <code>podman run --env-file</code>: it loads the file <em>into</em> the container and the host never sees those variables. If the <code>.env</code> values are only needed inside the container, <code>[Container] EnvironmentFile=</code> alone is enough and you can drop the <code>Environment=</code> lines — but then nothing host-side (like the <code>PublishPort=</code> line) can expand them.</li>
-<li><code>.volume</code> and <code>.network</code> units don't support <code>Environment</code> or <code>EnvironmentFile</code> keys at all, so keep shared variables in your <code>.container</code> files (pods load them through their <code>[Service]</code> section, like the containers do).</li>
-<li><code>${VAR}</code> interpolation only happens on the generated <code>ExecStart</code>/<code>ExecStartPre</code> lines — not inside the <code>.env</code> file itself. <code>EnvironmentFile</code> values are literal, so referencing another variable inside a <code>.env</code> value (like writing <code>${DB_PORT}</code> into a <code>DATABASE_URL</code> line there) would hand the literal string to the container. Compose such values in the quadlet file instead, as above.</li>
-<li><code>%h</code> expands to your home directory, which fits the rootless layout. If you're using system quadlets under <code>/etc/containers/systemd/</code>, point <code>EnvironmentFile</code> at the absolute path instead.</li>
-<li>The file must exist when the unit starts. The <code>-</code> prefix that makes other systemd environment files optional isn't handled yet (<a href="https://github.com/podman-container-tools/podman/issues/26719">containers/podman#26719</a>).</li>
-<li>Avoid <code>%N</code>-style specifiers in resource names like <code>Volume=app-db-data.volume</code>: specifiers resolve per generated unit, so they point at the generated unit's own name instead of the resource you meant, and Quadlet can't link the files. <code>${VAR}</code> references don't have this problem.</li>
-</ul>
-<h2 id="wrapping-the-whole-stack-in-a-pod">Wrapping the whole stack in a pod <a class="anchor" href="#wrapping-the-whole-stack-in-a-pod" aria-hidden="true">🔗</a></h2>
-<p>Those three files can also be attached to a single pod. Containers in a pod share a network namespace (and cgroups), so they talk to each other over <code>localhost</code> instead of discrete hostnames.</p>
-<p>The pod owns that shared network namespace, so anything with network scope — published ports, the network itself, aliases, DNS, hostname — is declared in the pod's own file, and nowhere else. Containers keep only process-scoped configuration: the image, environment, volumes. The <code>.pod</code> file doubles as the declaration of the pod's exposed surface, which is exactly what it reads like:</p>
-<p><code>app.pod</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">My application pod</span>
-
-<span class="hljs-keyword">[Pod]</span>
-<span class="hljs-attr">PodName</span><span class="hljs-operator">=</span><span class="hljs-string">app-pod</span>
-<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">${PORT}:${PORT}</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">EnvironmentFile</span><span class="hljs-operator">=</span><span class="hljs-string">%h/.config/containers/systemd/.env</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p>The pod needs the same <code>EnvironmentFile</code> under <code>[Service]</code> as the containers — <code>PublishPort</code> ends up on the pod's <code>ExecStartPre</code> line, and that's what gives systemd the <code>PORT</code> value to expand.</p>
-<p>Each container joins the pod with a single <code>Pod=</code> line, and port publishing moves up to the pod — the containers drop their own <code>PublishPort</code>:</p>
-<p><code>app-db.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">PostgreSQL for development</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">docker.io/library/postgres:16</span>
-<span class="hljs-attr">ContainerName</span><span class="hljs-operator">=</span><span class="hljs-string">app-db</span>
-<span class="hljs-attr">Pod</span><span class="hljs-operator">=</span><span class="hljs-string">app.pod</span>
-<span class="hljs-attr">Volume</span><span class="hljs-operator">=</span><span class="hljs-string">app-db-data.volume:/var/lib/postgresql/data</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">POSTGRES_PASSWORD=${POSTGRES_PASSWORD}</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">EnvironmentFile</span><span class="hljs-operator">=</span><span class="hljs-string">%h/.config/containers/systemd/.env</span>
-<span class="hljs-attr">Restart</span><span class="hljs-operator">=</span><span class="hljs-string">on-failure</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p><code>app.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">My web application</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">localhost/app:latest</span>
-<span class="hljs-attr">ContainerName</span><span class="hljs-operator">=</span><span class="hljs-string">app</span>
-<span class="hljs-attr">Pod</span><span class="hljs-operator">=</span><span class="hljs-string">app.pod</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">HOST=${HOST}</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">PORT=${PORT}</span>
-<span class="hljs-attr">Environment</span><span class="hljs-operator">=</span><span class="hljs-string">DATABASE_URL=postgres://postgres:dev@localhost:${DB_PORT}/dev</span>
-
-<span class="hljs-keyword">[Service]</span>
-<span class="hljs-attr">EnvironmentFile</span><span class="hljs-operator">=</span><span class="hljs-string">%h/.config/containers/systemd/.env</span>
-<span class="hljs-attr">Restart</span><span class="hljs-operator">=</span><span class="hljs-string">always</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<p>How this plays out:</p>
-<ul>
-<li><code>app.pod</code> becomes <code>app-pod.service</code>. Quadlet wires the stack together automatically: the pod unit gets <code>Wants=</code>/<code>Before=</code> for each joined container, and each container unit gets <code>BindsTo=</code>/<code>After=</code> on the pod. <code>systemctl --user start app-pod.service</code> brings up everything; stopping the pod stops its containers.</li>
-<li>Containers inside the pod share its network, so the app reaches Postgres at <code>localhost</code> — that's why the <code>DATABASE_URL</code> host switches from <code>@app-db</code> to <code>@localhost</code>. The host portion is written inline because it depends on the topology, but the port still comes from <code>.env</code> via <code>${DB_PORT}</code>.</li>
-<li>Only the pod publishes ports now. Postgres' internal <code>5432</code> is no longer reachable from the host at all, which is a nice side effect — the database is only reachable from inside the pod.</li>
-<li>Podman backs up that division: a container joined to a pod cannot declare its own network config. <code>PublishPort=</code>, <code>Network=</code>, or <code>podman run --publish</code> on a pod member is rejected before the container even starts — <code>network cannot be configured when it is shared with a pod</code>. So the port can only live in <code>app.pod</code>, and the container files can never drift out of sync with it.</li>
-<li>Pods default to <code>ExitPolicy=stop</code>: when the last container in the pod exits, the pod itself stops. If you want the pod to stick around for tooling, set <code>ExitPolicy=continue</code> under <code>[Pod]</code>.</li>
-<li><code>podman kube generate app-pod</code> emits the equivalent single-Pod YAML, which is where the &quot;Kube way&quot; in the title comes in — more on that in a later post.</li>
-</ul>
-<h2 id="keeping-quadlets-in-your-repository">Keeping quadlets in your repository <a class="anchor" href="#keeping-quadlets-in-your-repository" aria-hidden="true">🔗</a></h2>
-<p>So far everything lives in <code>~/.config/containers/systemd/</code> (the default search path for rootless user quadlets). Putting the files directly under your home directory works, but they're plain text — they belong in version control. Quadlet follows symbolic links inside its search paths, including a symlinked subdirectory, so a single symlink points the whole search path at your repository:</p>
-<p><code>ln -s ~/code/app/containers/systemd ~/.config/containers/systemd/app</code></p>
-<p>Now <code>app.pod</code>, <code>app-db.container</code>, <code>app-db-data.volume</code> and friends live in the repo and are discovered through the <code>app</code> symlink every time units are generated. Since Quadlet regenerates the units on <code>systemctl --user daemon-reload</code>, the whole workflow is: edit files in the repo, commit, pull on the target machine, <code>daemon-reload</code>, done. There's no separate install step to keep in sync with the sources.</p>
-<p>A few notes:</p>
-<ul>
-<li>The <code>.env</code> file doesn't have a quadlet extension, so it isn't scanned — but <code>EnvironmentFile</code> reads it at runtime all the same. Point it through the symlink too and it stays in the repo: <code>EnvironmentFile=%h/.config/containers/systemd/app/.env</code> (keep the symlink name consistent across machines, since it's part of the path).</li>
-<li>The generator resolves through the symlink, so error messages and <code>SourcePath</code> reference the real repo files, not the link.</li>
-<li>If you'd rather not keep a live symlink, <code>podman quadlet install &lt;file&gt;</code> (Podman 5.6+) copies a unit file into the search path for you. Running Quadlet straight from an app subdirectory without any symlink is an open feature request (<a href="https://github.com/podman-container-tools/podman/issues/26941">containers/podman#26941</a>, <a href="https://github.com/podman-container-tools/podman/issues/27069">containers/podman#27069</a>).</li>
-</ul>
+<p>I've been using Podman for a few years now, and overall I've found it a completely acceptable replacement for Docker. That said, I've found most of the tutorials/resources(and subsequently, AI) have described Podman from a more system-admin/devops workflow, not a web developer workflow. So in the next few posts, I'm going to outline some ways I've found to work with Podman containers. Some of them will be fairly familiar (like <a href="https://docs.podman.io/en/latest/markdown/podman-compose.1.html">podman-compose</a>, while others are much newer (like a <a href="https://www.redhat.com/en/blog/multi-container-application-podman-quadlet">kubernetes-style &quot;kube&quot; file</a>).</p>
 ]]></content:encoded>
       <pubDate>Sat, 12 Sep 2026 00:00:00 +0000</pubDate>
       <category>podman</category>
