@@ -7,18 +7,18 @@
       <header class="post-header">
           <hgroup>
               <h1>{{ page.title | e }}</h1>
+              <hr>
               <div class="post-meta">
                   <time datetime="{{ page.date }}">{{ page.date }}</time>
           {% if page.reading_time %}<span class="post-meta-sep">·</span> <span class="post-reading-time">{{ page.reading_time }} min read</span>{% endif %}
               </div>
-              <hr>
+              {% if page.tags %}
+              <div class="post-tags">
+                {% for t in page.tags %}<a class="tag" href="{{ get_taxonomy_url(kind='tags', term=t) }}">{{ t | e }}</a>{% endfor %}
+              </div>
+              {% endif %}
 
           </hgroup>
-{% if page.tags %}
-<div class="post-tags">
-  {% for t in page.tags %}<a class="tag" href="{{ get_taxonomy_url(kind='tags', term=t) }}">{{ t | e }}</a>{% endfor %}
-</div>
-{% endif %}
       </header>
       <div class="post-content">
         {{ content }}

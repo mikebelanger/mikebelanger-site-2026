@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mike Belanger — Full-stack developer based in Ottawa, Canada.">
-  <title>Hi, I&#39;m Mike - Home</title>
+  <meta name="description" content="My experiences with using Podman">
+  <title>Why Podman? - Home</title>
   <link rel="icon" type="image/svg+xml" href="http://127.0.0.1:3000/favicon.svg">
   <script>(function(){try{var t=localStorage.getItem("hwaro-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}})()</script>
-  <meta property="og:title" content="Hi, I&apos;m Mike">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="http://127.0.0.1:3000/">
-  <meta property="og:description" content="Mike Belanger — Full-stack developer based in Ottawa, Canada.">
+  <meta property="og:title" content="Why Podman?">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="http://127.0.0.1:3000/blog/why_podman/">
+  <meta property="og:description" content="My experiences with using Podman">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Hi, I&apos;m Mike">
-  <meta name="twitter:description" content="Mike Belanger — Full-stack developer based in Ottawa, Canada.">
-  <link rel="canonical" href="http://127.0.0.1:3000/">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Home","url":"http://127.0.0.1:3000/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"http://127.0.0.1:3000/?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
+  <meta name="twitter:title" content="Why Podman?">
+  <meta name="twitter:description" content="My experiences with using Podman">
+  <link rel="canonical" href="http://127.0.0.1:3000/blog/why_podman/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Why Podman?","url":"http://127.0.0.1:3000/blog/why_podman/","datePublished":"2026-09-26T00:00:00-04:00","description":"My experiences with using Podman","author":{"@type":"Person","name":"mike"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"http://127.0.0.1:3000/"},{"@type":"ListItem","position":2,"name":"Blog","item":"http://127.0.0.1:3000/blog/"},{"@type":"ListItem","position":3,"name":"Why Podman?"}]}</script>
   
   
   
@@ -26,7 +27,7 @@
   
   
 </head>
-<body data-section="">
+<body data-section="blog">
 <header class="slim">
     <nav class="stack">
         <a href="http://127.0.0.1:3000/" class="logo">Home</a>
@@ -60,112 +61,77 @@
     <div class="search-results" id="searchResults"></div>
   </div>
 </div>
+<div class="reading-progress" aria-hidden="true"></div>
   <main id="main">
-    <header class="home-hero">
-    </header>
-        
-          
-<section id="greeting">
-    <img id="mike" src="/img/md_mikeb.jpg" alt="me"></img>
-<section>
-    <h2>Hi, I'm Mike</h2>
-    <p>I'm a full-stack developer working in geospatial — <a href="https://openlayers.org">OpenLayers</a>, <a href="https://qgis.org">QGIS</a>, <a href="https://leafletjs.com">Leaflet</a>, and the pipelines feeding them. <a href="https://react.dev">React</a> and <a href="https://typescriptlang.org">TypeScript</a> on the front, <a href="https://nodejs.org">Node.js</a> and <a href="https://python.org">Python</a> on the back, with <a href="https://rubyonrails.org">Ruby on Rails</a> earlier on. Lately I've been picking up <a href="https://crystal-lang.org">Crystal</a> and <a href="https://rust-lang.org">Rust</a>.</p>
-<p>I came to software from a <a href="https://carleton.ca/cognitivescience/bachelors-of-cognitive-science/">cognitive science</a> degree, working on attention models and eye-tracking.</p>
+    <article class="post">
+      <header class="post-header">
+          <hgroup>
+              <h1>Why Podman?</h1>
+              <hr>
+              <div class="post-meta">
+                  <time datetime="2026-09-26">2026-09-26</time>
+          <span class="post-meta-sep">·</span> <span class="post-reading-time">3 min read</span>
+              </div>
+              
+              <div class="post-tags">
+                <a class="tag" href="http://127.0.0.1:3000/tags/podman/">podman</a><a class="tag" href="http://127.0.0.1:3000/tags/web/">web</a><a class="tag" href="http://127.0.0.1:3000/tags/linux/">linux</a>
+              </div>
+              
 
+          </hgroup>
+      </header>
+      <div class="post-content">
+        <p><a href="https://podman.io">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="https://docker.com">Docker</a> substitute:</p>
+<section class="listicle"><ol>
+<li>
+<h6>Licensing</h6>
+</li>
+</ol>
+<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed. Basically, it's open source and can be used by an unlimited number of users for free. If you like using <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a>, its <a href="https://podman-desktop.io/">Podman equivalent</a> is free and open source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
+<ol start="2">
+<li>
+<h6>Security</h6>
+</li>
+</ol>
+<p>Podman allows its containers to be <a href="https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#">rootless</a>. What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, Docker <a href="https://docs.docker.com/engine/security/rootless/">has rootless mode now too</a>, so if rootless is your only attraction, just switch to that.</p>
+<ol start="3">
+<li>
+<h6>Integration with SystemD</h6>
+</li>
+</ol>
+<p>Podman's <a href="https://docs.podman.io/en/v5.8.1/markdown/podman-quadlet.1.html">Quadlets</a> facilitate integrating with <a href="https://systemd.io/">systemd</a> as well. Why bother integrating with systemd? Your web app is probably running on a server with Linux, and that version of Linux is probably using systemd. systemd isn't technically part of Linux itself, but it's the unofficial standard init system for most Linux distros, including <a href="https://fedoraproject.org/">Fedora</a>, <a href="https://ubuntu.com/">Ubuntu</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
+<ol start="4">
+<li>
+<h6>Pods</h6>
+</li>
+</ol>
+<p>As the name suggests, Podman works with sets of <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/assembly_working-with-pods_building-running-and-managing-containers">pods</a>. Although Docker has no equivalent feature, pods aren't specific to Podman either, as <a href="https://kubernetes.io/docs/concepts/workloads/pods/">the concept was inspired from Kubernetes</a>. Pods allow containers to be grouped together and given their own network namespace. Once containers are grouped into “pods”, those pods can be started/restarted together, like <code>podman pod start my-app</code>.</p>
+<p>This feature is less geared towards developers, more so system admins/devops who manage lots of containers. That said, they're easy to set up, and alleviate some of the tedium associated with spinning up/down large numbers of containers.</p>
 </section>
-</section>
+<p>I've been using Podman for a few years now, and overall I've found it a completely acceptable replacement for Docker. That said, I've found most of the tutorials/resources (and subsequently, AI) have described Podman from a more system-admin/devops workflow, not a web developer workflow. So in the next few posts, I'm going to outline some ways I've found to work with Podman containers. Some of them will be fairly familiar (like <a href="https://docs.podman.io/en/latest/markdown/podman-compose.1.html">podman-compose</a>), while others are much newer (like a <a href="https://www.redhat.com/en/blog/multi-container-application-podman-quadlet">Kubernetes-style “kube” file</a>).</p>
 
-<h2 id="experience">Experience <a class="anchor" href="#experience" aria-hidden="true">🔗</a></h2>
-<hr />
-<hgroup>
-    <h3>Software Developer</h3>
-<h4><a href="https://www.kongsberggeospatial.com">Kongsberg Geospatial</a> · May 2024 – Present · Ottawa, Canada</h4>
-
-</hgroup>
-<ul>
-<li>Obtained “Secret” security clearance.</li>
-<li>Developed React-based frontends with OpenLayers in TypeScript, prioritizing user experience and maintainable code.</li>
-<li>Modified Node.js back end to interface with various microservices, ensuring code maintainability.</li>
-</ul>
-<hgroup>
-    <h3>Software Developer</h3>
-<h4><a href="https://www.imrsv.ai">IMRSV Data Labs</a> · Dec 2020 – Aug 2023 · Ottawa, Canada</h4>
-
-</hgroup>
-<ul>
-<li>Obtained “Secret” security clearance.</li>
-<li>Created React-based web interfaces in TypeScript for classified defense projects, focusing on intuitive UX and maintainable code.</li>
-<li>Scoped out the implementation of various geospatial-related pages.</li>
-<li>Enhanced React Native mobile interfaces for a retail workforce application.</li>
-<li>Collaborated on back end development using Python and Node.js, integrating APIs so the front end and back end could talk to each other.</li>
-</ul>
-<hgroup>
-    <h3>Junior Developer</h3>
-<h4><a href="https://www.weathertelematics.com/">Weather Telematics Inc.</a> · Jul 2017 – Oct 2017, Oct 2018 – Mar 2020 · Ottawa, Canada</h4>
-
-</hgroup>
-<ul>
-<li>Analyzed weather and traffic data using <a href="https://spark.apache.org">Apache Spark</a> with Python and <a href="https://scala-lang.org">Scala</a> for real-time driver notifications.</li>
-<li>Used QGIS to segment Autobahn routes into GPS points for road weather condition modeling (proof of concept for Daimler AG).</li>
-<li>Implemented functionality for a single-page application built with Angular and Leaflet for weather predictions and road conditions.</li>
-</ul>
-<hgroup>
-    <h3>Junior Developer</h3>
-<h4><a href="https://www.fluentsolutions.com/">Fluent Solutions Inc.</a> · Nov 2017 – Oct 2018 · Ottawa, Canada</h4>
-
-</hgroup>
-<ul>
-<li>Took ownership of entire Ruby on Rails projects and worked directly with customers on requirements.</li>
-<li>Developed websites using Ruby on Rails, <a href="https://getbootstrap.com">Bootstrap</a>, <a href="https://m3.material.io">Material Design</a>, and Angular.js with a TDD approach.</li>
-<li>Wrote frontend code with JavaScript, TypeScript, and <a href="https://coffeescript.org">CoffeeScript</a>.</li>
-<li>Designed UI mockups using <a href="https://inkscape.org">Inkscape</a> and <a href="https://www.pixelmator.com">Pixelmator</a>.</li>
-</ul>
-<hgroup>
-    <h3>Workshop Facilitator</h3>
-<h4><a href="https://www.thespaceottawa.ca/">theSpace Ottawa</a> · May 2017 – Mar 2020 · Ottawa, Canada</h4>
-
-</hgroup>
-<ul>
-<li>Taught Graphic Design workshops using <a href="https://www.blender.org">Blender</a>, <a href="https://krita.org">Krita</a>, <a href="https://goxel.xyz">Goxel</a>, and <a href="https://ephtracy.github.io/index.html">MagicaVoxel</a>.</li>
-<li>Created learning material and adapted workshops for young adults diagnosed with mental disabilities.</li>
-</ul>
-<h2 id="education">Education <a class="anchor" href="#education" aria-hidden="true">🔗</a></h2>
-<hr />
-<hgroup>
-    <h3><a href="https://carleton.ca/cognitivescience/bachelors-of-cognitive-science/">Bachelor of Cognitive Science</a></h3>
-<h4><a href="https://carleton.ca">Carleton University</a> · 2010 – 2014</h4>
-
-</hgroup>
-<ul>
-<li>Co-authored a peer-reviewed journal publication.</li>
-<li>Implemented an attentional model (Emergic Network Architecture) in Python that simulated eye-tracking movements.</li>
-<li>Established a version control system (<a href="https://git-scm.com">git</a>) for the AI model's codebase.</li>
-<li>Documented various wiki articles regarding the AI model.</li>
-</ul>
-<hgroup>
-    <h3><a href="https://www.algonquincollege.com/creative-studies/program/animation/">Ontario College Advanced Diploma</a></h3>
-<h4><a href="https://algonquincollege.com">Algonquin College of Applied Arts and Technology</a> · 2004 – 2007</h4>
-
-</hgroup>
-<ul>
-<li>Became proficient with <a href="https://www.blender.org">Blender</a> and some Blender Python.</li>
-<li>Became familiar with Maya and Adobe Photoshop.</li>
-</ul>
-<h2 id="certifications">Certifications <a class="anchor" href="#certifications" aria-hidden="true">🔗</a></h2>
-<hr />
-<ul>
-<li><a href="https://courses.edx.org/certificates/64f2aff2b696498eae87aabf56021fce">edX Verified Certificate for HTML5 Introduction</a></li>
-<li><a href="https://s3.amazonaws.com/verify.edx.org/downloads/bac48975d9754ac6a6ecca691eb6e809/Certificate.pdf">edX Verified Certificate for Systematic Program Design – Part 1</a></li>
-<li><a href="https://www.coursera.org/account/accomplishments/verify/C44XHMG2WUDL">Coursera Verified Certificate: The Bits and Bytes of Computer Networking</a></li>
-</ul>
-<h2 id="publications">Publications <a class="anchor" href="#publications" aria-hidden="true">🔗</a></h2>
-<hr />
-<ul>
-<li><a href="https://www.researchgate.net/publication/264551706_WikiSilo_A_Self-organizing_Crowd_Sourcing_System_for_Interdisciplinary_Science?channel=doi&amp;linkId=53e53c570cf25d674e9969e7&amp;showFulltext=true">WikiSilo: A Self-organizing, Crowdsourcing System for Interdisciplinary Science</a></li>
-</ul>
+      </div>
 
       
+      
+      
 
+      
+      
+
+      
+      
+      <nav class="post-nav" aria-label="More posts">
+        
+        
+        <a class="post-nav-link post-nav-next" href="http://127.0.0.1:3000/blog/crystal_oo_types/" rel="next">
+          <span class="post-nav-label">(Older)</span>
+          <span class="post-nav-title">Mixing instances of parent and child in Crystal</span>
+        </a>
+        
+      </nav>
+      
+    </article>
   </main>
     <footer class="blog-footer">
       <p>Powered by <a href="https://github.com/hahwul/hwaro">Hwaro</a></p>

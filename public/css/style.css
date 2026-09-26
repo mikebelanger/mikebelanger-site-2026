@@ -20,7 +20,7 @@
     }
 
     --pico-font-weight: 300;
-    --pico-font-size: 120%;
+    --pico-font-size: 100%;
 
     button {
       --pico-font-weight: 500;
@@ -46,11 +46,36 @@
     --pico-text-selection-color: color-mix(in srgb, var(--pico-primary), 50% transparent) !important;
     --pico-primary-focus: color-mix(in srgb, var(--pico-primary), 90% transparent) !important;
 
-    --pico-font-size: 130%;
+    --pico-border-width: 2px;
 
-    h1, h2, h3 {
+    --pico-font-size: 105%;
+
+    h1 {
         --pico-font-weight: 300;
-        --pico-font-size: 140%;
+        --pico-font-size: 130%;
+    }
+
+    /* h2/h3/h4 are the resume levels: section, role, employer. Each reproduces
+       the old h3 / h5 / h6 rendering exactly - size, weight, line height and
+       top spacing - so promoting the levels does not change the look. */
+    h2 {
+        --pico-font-weight: 300;
+        --pico-line-height: 1.175;
+        font-size: 1.95rem;
+        margin: unset;
+    }
+
+    h3 {
+        --pico-line-height: 1.225;
+        font-size: 1.18rem;
+        margin-top: 1.6875rem;
+    }
+
+    h4 {
+        --pico-line-height: 1.25;
+        font-size: 1.05rem;
+        font-style: italic;
+        margin-top: 0;
     }
 
     h6 {
@@ -60,6 +85,17 @@
     section#greeting {
         display: flow-root;
     }
+
+    .anchor {
+        opacity: 0.0;
+        display: inline-block;
+    }
+
+    :is(h1, h2, h3, h4, h5, h6):has(.anchor):hover > .anchor {
+        opacity: 1.0;
+        transition: opacity 1s;
+    }
+
 }
 
 /* Code */
@@ -173,17 +209,22 @@ nav.stack {
     gap: 0.5rem;
 }
 
-.search-and-theme > button {
+.search-and-theme > button,
+.contact-buttons > a {
     border-style: solid;
     border-radius: 10px;
-    border-color: var(--pico-muted-border-color) !important;
-    border-width: 2px;
+    border-color: var(--pico-secondary) !important;
+    border-width: 1px;
     margin: unset;
     height: 2rem;
 }
 
-.search-and-theme > button:hover {
+.search-and-theme > button:hover,
+.contact-buttons > a:hover,
+.search-and-theme > button:hover > kbd{
     border-color: var(--pico-primary-hover-border) !important;
+    color: var(--pico-primary);
+    background: var(--pico-primary-focus);
 }
 
 /* Search trigger */
@@ -231,7 +272,6 @@ nav.stack {
     line-height: 1rem;
 }
 
-
 header.slim {
     display: flex;
     justify-content: space-between;
@@ -273,8 +313,8 @@ hr {
     padding-top: unset;
 }
 
-h3 {
-    margin: unset;
+.post-content > ol {
+    padding-left: 0;
 }
 
 .post-tags {
@@ -310,8 +350,19 @@ header.post-header {
     border-bottom: unset;
 }
 
-.post-content {
-    margin-top: var(--pico-block-spacing-vertical);
+section.listicle {
+    margin-left: var(--pico-block-spacing-horizontal);
+}
+
+section.listicle > p,
+section.listicle > ol,
+section.listicle > li {
+    margin-left: unset;
+    padding-left: unset;
+}
+
+section.listicle > ol > li > h6 {
+    text-decoration: underline;
 }
 
 /* Search overlay */
@@ -631,8 +682,13 @@ ul.section-list {
 
 /* Clear the floated #mike image on the Skills heading so the skills table
    (markdown) below never wraps up beside the image. */
-h3#skills {
+h2#skills {
     clear: both;
+}
+
+header,
+footer {
+    background-color: var(--pico-code-background-color);
 }
 
 footer.blog-footer {
@@ -651,6 +707,24 @@ section#contact {
     margin: unset;
 }
 
+details > p,
+details > ul {
+    margin-left: var(--pico-block-spacing-horizontal);
+    margin-right: var(--pico-block-spacing-horizontal);
+    padding-bottom: unset;
+}
+
+details > summary["open=true"] {
+    margin-bottom: 1em !important;
+}
+
+details {
+    border: 1px solid var(--pico-muted-border-color);
+    border-color: color-mix(in srgb, var(--pico-primary) 45%, transparent);
+    background-color: var(--pico-primary-focus);
+    border-radius: var(--pico-border-radius);
+}
+
 @media screen and (width >= 500px) {
     main#main {
         padding-left: 10% !important;
@@ -658,6 +732,10 @@ section#contact {
     }
     section#greeting {
         margin-bottom: unset !important;
+    }
+    details {
+        width: 50%;
+        margin-left: 25%;
     }
 }
 
@@ -680,8 +758,8 @@ section#contact {
         height: auto;
     }
 
-    h1, h2, h4, h5, h6 {
-        font-size: smaller !important;
+    h2 {
+        font-size: 1rem !important;
     }
 
     p {

@@ -57,6 +57,7 @@ twitter_card = "summary_large_image"
 # =============================================================================
 
 [markdown]
+insert_anchor_links = "right"
 emoji = true
 task_lists = true
 definition_lists = true
