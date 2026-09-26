@@ -1,6 +1,6 @@
 +++
 title = "Why Podman?"
-date = "2026-09-12"
+date = "2026-09-26"
 tags = ["podman", "web", "linux"]
 categories = ["general"]
 authors = ["mike"]

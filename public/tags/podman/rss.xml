@@ -6,81 +6,6 @@
     <description></description>
     <atom:link href="http://127.0.0.1:3000/tags/podman/rss.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>A Developers Guide to Podman Quadlets</title>
-      <link>http://127.0.0.1:3000/blog/ini_quadlets_dev/</link>
-      <guid>http://127.0.0.1:3000/blog/ini_quadlets_dev/</guid>
-      <description>A Quick Overview of Using Podman Quadlets</description>
-      <content:encoded><![CDATA[<p>Here's the overall quadlet setup for a nodejs app:</p>
-<pre data-copy="true"><code class="language-sh hljs">├── app
-│   ├── index.js
-│   ├── node_modules
-│   ├── package.json
-│   └── package-lock.json
-├── containers
-│   ├── example-app.container
-│   └── example-app.pod
-└── update-containers.sh
-</code></pre>
-<p>The main benefit of using <a href="https://en.wikipedia.org/wiki/INI_file">INI-style</a> Quadlets are their familiarity and clarity. System admins and UNIX greybeards alike will find the syntax familiar. The more Quadlet-specific terms can clarify where/how containers integrate:</p>
-<p><code>example-app.container</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">Example Node.js app</span>
-
-<span class="hljs-keyword">[Container]</span>
-<span class="hljs-attr">Pod</span><span class="hljs-operator">=</span><span class="hljs-string">example-app.pod</span>
-<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">docker.io/node:24</span>
-<span class="hljs-attr">WorkingDir</span><span class="hljs-operator">=</span><span class="hljs-string">/app</span>
-<span class="hljs-attr">Exec</span><span class="hljs-operator">=</span><span class="hljs-string">/bin/sh -c &quot;npm i || node --watch index.js&quot;</span>
-<span class="hljs-attr">Volume</span><span class="hljs-operator">=</span><span class="hljs-string">../app:/app:Z</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">multi-user.target</span>
-
-</code></pre>
-<p><code>example-app.pod</code>:</p>
-<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
-<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">Example app pod</span>
-
-<span class="hljs-keyword">[Pod]</span>
-<span class="hljs-attr">PodName</span><span class="hljs-operator">=</span><span class="hljs-string">example-app</span>
-<span class="hljs-attr">ExitPolicy</span><span class="hljs-operator">=</span><span class="hljs-string">stop</span>
-<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">3002:3002</span>
-
-<span class="hljs-keyword">[Install]</span>
-<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
-</code></pre>
-<h5 id="gotchas">Gotchas: <a class="anchor" href="#gotchas" aria-hidden="true">🔗</a></h5>
-<section class="listicle"><ol>
-<li>
-<h5>These aren't the actual files systemd runs</h5>
-</li>
-</ol>
-<p>These files get translated (the technical term is &quot;lowered&quot;) into other, <em>actual</em> systemd files for systemd to bootstrap. I like to think of the relationship quadlet files to systemd files like the relationship of SASS files to CSS, or React's JSX files to JS. While the syntax of quadlets is similar to what it gets compiled into, it isn't identical. To anyone less familiar with &quot;pure&quot; systemd, its difficult to distinguish between quadlet and systemd-specific declarations.</p>
-<ol start="2">
-<li>
-<h5>They need to be in specific subdirectories</h5>
-</li>
-</ol>
-<p>As someone used to <code>git clone</code>ing a repo and then doing <code>docker-compose up</code>, I found this one particularly confusing. Systemd ships with most OSs with a predefined set of paths that it looks to discover new services. Quadlets continue that trend, and have their own particular path it looks for.</p>
-<p>Fortunately, your application code <em>can</em> live in any directory you'd like, provided that directory gets symlinked over into one of the quadlet discovery paths. A quick <code>ln -sfn &quot;$PWD/containers&quot; &quot;$QUADLET_DIR/ini_style_quadlet&quot;</code> (super intuitive, I know) should  do the trick.</p>
-</section>
-<h4 id="typical-dev-workflow">Typical Dev Workflow: <a class="anchor" href="#typical-dev-workflow" aria-hidden="true">🔗</a></h4>
-<section class="listicle"><ol>
-<li>Developer clones code repo</li>
-<li>They figure out their systemd discovery path, and symlink their downloaded repo path <em>into</em> that systemd discovery path.</li>
-<li>They spin up the containers via <code>systemctl --user start app-name.service</code></li>
-<li>Add code, commit it in the usual way.</li>
-<li>To stop the service, do <code>podman pod stop app-name.service</code>.</li>
-</ol>
-</section>
-]]></content:encoded>
-      <pubDate>Sat, 12 Sep 2026 00:00:00 +0000</pubDate>
-      <category>podman</category>
-      <category>web</category>
-      <category>linux</category>
-      <category>general</category>
-    </item>
-    <item>
       <title>Why Podman?</title>
       <link>http://127.0.0.1:3000/blog/why_podman/</link>
       <guid>http://127.0.0.1:3000/blog/why_podman/</guid>
@@ -114,7 +39,7 @@
 </section>
 <p>I've been using Podman for a few years now, and overall I've found it a completely acceptable replacement for Docker. That said, I've found most of the tutorials/resources (and subsequently, AI) have described Podman from a more system-admin/devops workflow, not a web developer workflow. So in the next few posts, I'm going to outline some ways I've found to work with Podman containers. Some of them will be fairly familiar (like <a href="https://docs.podman.io/en/latest/markdown/podman-compose.1.html">podman-compose</a>), while others are much newer (like a <a href="https://www.redhat.com/en/blog/multi-container-application-podman-quadlet">Kubernetes-style “kube” file</a>).</p>
 ]]></content:encoded>
-      <pubDate>Sat, 12 Sep 2026 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
       <category>podman</category>
       <category>web</category>
       <category>linux</category>

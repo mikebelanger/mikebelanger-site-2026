@@ -50,9 +50,32 @@
 
     --pico-font-size: 105%;
 
-    h1, h2, h3 {
+    h1 {
         --pico-font-weight: 300;
         --pico-font-size: 130%;
+    }
+
+    /* h2/h3/h4 are the resume levels: section, role, employer. Each reproduces
+       the old h3 / h5 / h6 rendering exactly - size, weight, line height and
+       top spacing - so promoting the levels does not change the look. */
+    h2 {
+        --pico-font-weight: 300;
+        --pico-line-height: 1.175;
+        font-size: 1.95rem;
+        margin: unset;
+    }
+
+    h3 {
+        --pico-line-height: 1.225;
+        font-size: 1.18rem;
+        margin-top: 1.6875rem;
+    }
+
+    h4 {
+        --pico-line-height: 1.25;
+        font-size: 1.05rem;
+        font-style: italic;
+        margin-top: 0;
     }
 
     h6 {
@@ -288,10 +311,6 @@ header.post-header {
 hr {
     margin-top: unset;
     padding-top: unset;
-}
-
-h3 {
-    margin: unset;
 }
 
 .post-content > ol {
@@ -663,7 +682,7 @@ ul.section-list {
 
 /* Clear the floated #mike image on the Skills heading so the skills table
    (markdown) below never wraps up beside the image. */
-h3#skills {
+h2#skills {
     clear: both;
 }
 
@@ -739,8 +758,8 @@ details {
         height: auto;
     }
 
-    h1, h2, h4, h5, h6 {
-        font-size: smaller !important;
+    h2 {
+        font-size: 1rem !important;
     }
 
     p {
