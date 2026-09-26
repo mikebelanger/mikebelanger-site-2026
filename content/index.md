@@ -6,7 +6,7 @@ description = "Mike Belanger — Full-stack developer based in Ottawa, Canada."
 +++
 
 {% welcome(strong="Hi, I'm Mike", src="/img/md_mikeb.jpg", alt="me") %}
-I'm a full-stack developer working in geospatial — [OpenLayers](https://openlayers.org), [QGIS](https://qgis.org), [Leaflet](https://leafletjs.com), and the pipelines feeding them. [React](https://react.dev) and [TypeScript](https://typescriptlang.org) on the front, [Node.js](https://nodejs.org) and [Python](https://python.org) on the back, with [Ruby on Rails](https://rubyonrails.org) earlier on. Lately I've been picking up [Crystal](https://crystal-lang.org) and [Rust](https://rust-lang.org).
+I'm a developer who writes geospatial applications. I work with [OpenLayers](https://openlayers.org), [QGIS](https://qgis.org), [Leaflet](https://leafletjs.com), and the pipelines feeding them. [React](https://react.dev) and [TypeScript](https://typescriptlang.org) on the front, [Node.js](https://nodejs.org) and [Python](https://python.org) on the back, with [Ruby on Rails](https://rubyonrails.org) earlier on. Lately I've been picking up [Crystal](https://crystal-lang.org) and [Rust](https://rust-lang.org).
 
 I came to software from a [cognitive science](https://carleton.ca/cognitivescience/bachelors-of-cognitive-science/) degree, working on attention models and eye-tracking.
 {% end %}
