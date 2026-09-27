@@ -1,0 +1,14 @@
+# Home
+
+> Site and blog of Mike Belanger
+
+## Pages
+
+- [Hi, I'm Mike](https://mikebelanger.ca/): Mike Belanger — Full-stack developer based in Ottawa, Canada.
+- [Blog posts](https://mikebelanger.ca/posts/): Mike Belanger — Full-stack developer based in Ottawa, Canada.
+
+## Blog
+
+- [Mixing instances of parent and child in Crystal](https://mikebelanger.ca/blog/crystal_oo_types/): A strange error message from the Crystal compiler.
+- [Why Podman?](https://mikebelanger.ca/blog/why_podman/): My experiences with using Podman
+
