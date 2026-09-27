@@ -1,5 +1,7 @@
 # Home
 
+> Site and blog of Mike Belanger
+
 ## Pages
 
 - [Hi, I'm Mike](http://127.0.0.1:3000/): Mike Belanger — Full-stack developer based in Ottawa, Canada.

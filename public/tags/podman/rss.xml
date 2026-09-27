@@ -3,7 +3,7 @@
   <channel>
     <title>Home - Tags: podman</title>
     <link>http://127.0.0.1:3000/tags/podman/</link>
-    <description></description>
+    <description>Site and blog of Mike Belanger</description>
     <atom:link href="http://127.0.0.1:3000/tags/podman/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Why Podman?</title>

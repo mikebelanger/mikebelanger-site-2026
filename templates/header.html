@@ -6,6 +6,7 @@
   <meta name="description" content="{{ page.description | default(site.description, true) | e }}">
   <title>{% if page.title is present %}{{ page.title | e }} - {% endif %}{{ site.title | e }}</title>
   <link rel="icon" type="image/svg+xml" href="{{ base_url }}/favicon.svg">
+  <link rel="alternate" type="application/rss+xml" href="https://mikebelanger.ca/rss" title="Mike Belanger">
   <script>(function(){try{var t=localStorage.getItem("hwaro-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}})()</script>
   {{ og_all_tags }}
   {{ canonical_tag }}

@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Home - Tags: crystal</title>
-    <link>http://127.0.0.1:3000/tags/crystal/</link>
+    <title>Home</title>
+    <link>http://127.0.0.1:3000/</link>
     <description>Site and blog of Mike Belanger</description>
-    <atom:link href="http://127.0.0.1:3000/tags/crystal/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://127.0.0.1:3000/rss" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why Podman?</title>
+      <link>http://127.0.0.1:3000/blog/why_podman/</link>
+      <guid>http://127.0.0.1:3000/blog/why_podman/</guid>
+      <description>My experiences with using Podman</description>
+      <content:encoded><![CDATA[<p><a href="https://podman.io">Podman</a> and its affiliated projects can help manage <a href="https://opencontainers.org/about/overview/">OCI-compatible containers</a> in several different ways, making it more than a <a href="https://docker.com">Docker</a> substitute:</p>
+<section class="listicle"><ol>
+<li>
+<h6>Licensing</h6>
+</li>
+</ol>
+<p><a href="https://podman.io">Podman</a> is Apache-2.0 licensed. Basically, it's open source and can be used by an unlimited number of users for free. If you like using <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a>, its <a href="https://podman-desktop.io/">Podman equivalent</a> is free and open source as well, and won't <a href="https://docs.docker.com/subscription-billing/desktop-license/">ask you to pay if your company gets past a certain size</a>.</p>
+<ol start="2">
+<li>
+<h6>Security</h6>
+</li>
+</ol>
+<p>Podman allows its containers to be <a href="https://developers.redhat.com/blog/2020/09/25/rootless-containers-with-podman-the-basics#">rootless</a>. What is rootless? It means there isn't one central process (daemon) that's in charge of all your containers. Not one central process that could crash and bring down all your containers, not one central process that could get compromised, and start acting maliciously. To be fair, Docker <a href="https://docs.docker.com/engine/security/rootless/">has rootless mode now too</a>, so if rootless is your only attraction, just switch to that.</p>
+<ol start="3">
+<li>
+<h6>Integration with SystemD</h6>
+</li>
+</ol>
+<p>Podman's <a href="https://docs.podman.io/en/v5.8.1/markdown/podman-quadlet.1.html">Quadlets</a> facilitate integrating with <a href="https://systemd.io/">systemd</a> as well. Why bother integrating with systemd? Your web app is probably running on a server with Linux, and that version of Linux is probably using systemd. systemd isn't technically part of Linux itself, but it's the unofficial standard init system for most Linux distros, including <a href="https://fedoraproject.org/">Fedora</a>, <a href="https://ubuntu.com/">Ubuntu</a>, and many others. Unless your server is running <a href="http://www.slackware.com/config/init.php">Slackware</a>, integrating with systemd is a no-brainer.</p>
+<ol start="4">
+<li>
+<h6>Pods</h6>
+</li>
+</ol>
+<p>As the name suggests, Podman works with sets of <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/assembly_working-with-pods_building-running-and-managing-containers">pods</a>. Although Docker has no equivalent feature, pods aren't specific to Podman either, as <a href="https://kubernetes.io/docs/concepts/workloads/pods/">the concept was inspired from Kubernetes</a>. Pods allow containers to be grouped together and given their own network namespace. Once containers are grouped into “pods”, those pods can be started/restarted together, like <code>podman pod start my-app</code>.</p>
+<p>This feature is less geared towards developers, more so system admins/devops who manage lots of containers. That said, they're easy to set up, and alleviate some of the tedium associated with spinning up/down large numbers of containers.</p>
+</section>
+<p>I've been using Podman for a few years now, and overall I've found it a completely acceptable replacement for Docker. That said, I've found most of the tutorials/resources (and subsequently, AI) have described Podman from a more system-admin/devops workflow, not a web developer workflow. So in the next few posts, I'm going to outline some ways I've found to work with Podman containers. Some of them will be fairly familiar (like <a href="https://docs.podman.io/en/latest/markdown/podman-compose.1.html">podman-compose</a>), while others are much newer (like a <a href="https://www.redhat.com/en/blog/multi-container-application-podman-quadlet">Kubernetes-style “kube” file</a>).</p>
+]]></content:encoded>
+      <pubDate>Sat, 26 Sep 2026 00:00:00 +0000</pubDate>
+      <category>podman</category>
+      <category>web</category>
+      <category>linux</category>
+      <category>general</category>
+    </item>
     <item>
       <title>Mixing instances of parent and child in Crystal</title>
       <link>http://127.0.0.1:3000/blog/crystal_oo_types/</link>

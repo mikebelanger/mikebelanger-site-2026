@@ -1,5 +1,7 @@
 title = "Home"
 base_url = "https://mikebelanger.ca"
+description = "Site and blog of Mike Belanger"
+
 [plugins]
 processors = ["markdown"]
 
@@ -27,10 +29,11 @@ name = "authors"
 enabled = true
 
 [feeds]
+filename = "rss"
 enabled = true
 type = "rss"
 limit = 10
-sections = ["posts"]
+sections = ["blog"]
 
 [search]
 enabled = true
