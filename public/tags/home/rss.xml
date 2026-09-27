@@ -3,7 +3,7 @@
   <channel>
     <title>Home - Tags: home</title>
     <link>http://127.0.0.1:3000/tags/home/</link>
-    <description></description>
+    <description>Site and blog of Mike Belanger</description>
     <atom:link href="http://127.0.0.1:3000/tags/home/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hi, I&apos;m Mike</title>
