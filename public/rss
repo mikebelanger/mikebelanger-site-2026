@@ -6,6 +6,134 @@
     <description>Site and blog of Mike Belanger</description>
     <atom:link href="http://127.0.0.1:3000/rss" rel="self" type="application/rss+xml" />
     <item>
+      <title>INI-style quadlets: a developer&apos;s perspective</title>
+      <link>http://127.0.0.1:3000/blog/ini_quadlets_dev/</link>
+      <guid>http://127.0.0.1:3000/blog/ini_quadlets_dev/</guid>
+      <description>A Quick Overview of Using Podman Quadlets</description>
+      <content:encoded><![CDATA[<h5 id="introduction">Introduction <a class="anchor" href="#introduction" aria-hidden="true">🔗</a></h5>
+<p><a href="https://podman.io/">Podman's</a> <a href="https://docs.podman.io/en/stable/markdown/podman-quadlet.1.html">Quadlet feature</a> allow podman containers to be integrated into <a href="https://systemd.io/">systemd</a> services.</p>
+<p>Why manage containers with systemd? You might argue that containers are better orchestrated with <a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a>, <a href="https://kubernetes.io/">Kubernetes</a>, or even <a href="https://www.ansible.com/">Ansible</a>.  That is true for larger installations. For a single Linux box or VPS, systemd is probably running on it already. I couldn't summarize it better than Elias Bourgess: <a href="https://ebourgess.dev/posts/podman-quadlet-production/#the-control-plane-you-already-run">it's the control pane you already run.</a>.</p>
+<p>There's two ways to write Quadlets:</p>
+<ul>
+<li><a href="https://www.redhat.com/en/blog/quadlet-podman.">INI-style quadlet definitions.</a> An extension of systemd's INI-style config language. This adds sections for things <a href="https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html">like containers and volumes</a>. This approach is for Linux system administrators who are already familiar with systemd.</li>
+<li><a href="https://www.redhat.com/en/blog/compose-podman-pods">K8s-style quadlet definitions.</a> These are Kubernetes-style yaml files that define your containers. This approach is clearly aimed at more dev/devops people. Anyone familiar with <a href="https://kubernetes.io/">Kubernetes</a> or <a href="https://docs.docker.com/compose/">docker-compose</a>.</li>
+</ul>
+<details>
+    <summary role="button" class="secondary outline">CAVEATS</summary>
+    <ul>
+<li>
+<p>You may be wondering why <a href="https://github.com/containers/podman-compose">podman-compose</a> isn't mentioned as an option.  While podman-compose is obviously a docker-compose replacement, industry leaders are shying away from supporting it, in favor <code>podman kube play</code>. More on that <a href="https://www.redhat.com/en/blog/podman-compose-docker-compose">here.</a></p>
+</li>
+<li>
+<p>In order to get <em>k8</em>-style kubernetes yaml, you need a <a href="https://docs.podman.io/en/latest/markdown/podman-kube.unit.5.html"><em>kube file</em></a>, which is technically an INI-style file. I'm glossing over that for now, as the bulk of the container definitions are still either expressed in Kubernetes-style YAML or INI.</p>
+</li>
+</ul>
+
+</details>
+<p>I'm a developer who's used to docker-compose, so I <a href="https://github.com/mikebelanger/lucky-vanilla/blob/main/containers/prod/pod.yml">tried out the k8-style first</a>. That said, curiosity got the better of me, and wondered what INI-style Quadlet definitions would look like.</p>
+<h5 id="setup">Setup <a class="anchor" href="#setup" aria-hidden="true">🔗</a></h5>
+<hr />
+<p>Here's a minimal setup for a nodejs application:</p>
+<pre data-copy="true"><code class="language-sh hljs">├── app
+│   ├── index.js
+│   ├── node_modules
+│   ├── package.json
+│   └── package-lock.json
+├── dev
+│   ├── example-app-dev.container
+│   └── example-app-dev.pod
+├── prod
+│   ├── example-app.container
+│   └── example-app.pod
+└── README.md
+</code></pre>
+<p>The quadlet-specific files here are under the <code>dev</code> and <code>prod</code> subdirectories for development and production, respectively. Here's a look at the ones in <code>dev</code>:</p>
+<p><code>dev/example-app-dev.container</code>:</p>
+<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
+<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">Example Node.js app</span>
+
+<span class="hljs-keyword">[Container]</span>
+<span class="hljs-attr">Pod</span><span class="hljs-operator">=</span><span class="hljs-string">example-app-dev.pod</span>
+<span class="hljs-attr">Image</span><span class="hljs-operator">=</span><span class="hljs-string">docker.io/node:24</span>
+<span class="hljs-attr">WorkingDir</span><span class="hljs-operator">=</span><span class="hljs-string">/app</span>
+<span class="hljs-attr">Exec</span><span class="hljs-operator">=</span><span class="hljs-string">/bin/sh -c &quot;npm i &amp;&amp; node --watch index.js&quot;</span>
+<span class="hljs-attr">Volume</span><span class="hljs-operator">=</span><span class="hljs-string">../app:/app:Z</span>
+
+<span class="hljs-keyword">[Install]</span>
+<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">multi-user.target</span>
+</code></pre>
+<p><code>dev/example-app-dev.pod</code>:</p>
+<pre data-copy="true"><code class="language-ini hljs"><span class="hljs-keyword">[Unit]</span>
+<span class="hljs-attr">Description</span><span class="hljs-operator">=</span><span class="hljs-string">Development version of example app</span>
+
+<span class="hljs-keyword">[Pod]</span>
+<span class="hljs-attr">PodName</span><span class="hljs-operator">=</span><span class="hljs-string">example-app-dev-pod</span>
+<span class="hljs-attr">ExitPolicy</span><span class="hljs-operator">=</span><span class="hljs-string">stop</span>
+<span class="hljs-attr">PublishPort</span><span class="hljs-operator">=</span><span class="hljs-string">3002:3002</span>
+
+<span class="hljs-keyword">[Install]</span>
+<span class="hljs-attr">WantedBy</span><span class="hljs-operator">=</span><span class="hljs-string">default.target</span>
+</code></pre>
+<details>
+    <summary role="button" class="secondary outline">NOTES</summary>
+    <h5>Important Concepts:</h5>
+<section class="listicle"><ol>
+<li>
+<h6>These aren't the actual files systemd runs</h6>
+</li>
+</ol>
+<p>These files get translated (the technical term is &quot;lowered&quot;) into other, <em>actual</em> systemd files for systemd to bootstrap. I like to think of the relationship quadlet files to systemd files like the relationship of SASS files to CSS, or React's JSX files to JS. While the syntax of quadlets is similar to what it gets compiled into, it isn't identical. To anyone less familiar with &quot;pure&quot; systemd, its difficult to distinguish between quadlet and systemd-specific declarations.</p>
+<ol start="2">
+<li>
+<h6>Systemd needs application code in certain subdirectories in order to run it</h6>
+</li>
+</ol>
+<p>I'm used to cloning repos onto any path on my disk, doing <code>docker-compose up</code> in that repo, and I'm up and running. Unfortunately, the Quadlet workflow isn't quite as straightforward.  Systemd ships with most OSs with a predefined set of paths that it looks to discover new services. Quadlets continue that trend.</p>
+<p>Fortunately, your application code <em>can</em> live in any directory you'd like, provided that directory gets copied/symlinked over into one of the quadlet discovery paths. A quick <code>ln -sfn &quot;$PWD/containers&quot; &quot;$QUADLET_DIR/ini_style_quadlet&quot;</code> (super intuitive, I know) should  do the trick.</p>
+</section>
+
+</details>
+<h4 id="dev-workflow">Dev Workflow: <a class="anchor" href="#dev-workflow" aria-hidden="true">🔗</a></h4>
+<section class="listicle"><ol>
+<li>Clone the repo.</li>
+<li>Find your systemd discovery path. On most systems, that resolves to <code>${XDG_CONFIG_HOME:-$HOME/.config}/containers/systemd</code>. So something like <code>~/.config/containers/systemd</code>. (If you're doing rootless, which I am)</li>
+<li><code>cd</code> into your repo, and link up the repo's subdirs into your quadlet discovery path:</li>
+</ol>
+<pre><code class="language-sh">cd project-dir
+ln -sfn &quot;$PWD/dev&quot; ~/.config/containers/systemd/dev
+ln -sfn &quot;$PWD/app&quot; ~/.config/containers/systemd/app
+</code></pre>
+<details>
+    <summary role="button" class="secondary outline">WHAT?</summary>
+    <p>Yeah, I'm not a fan of sym-linking over like this either.</p>
+<p>Some of you might ask why not just use <a href="https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#name"><code>podman quadlet install</code></a>, which is designed to make an &quot;easy installation&quot;. In terms of development, <code>podman quadlet install</code> copies over files into the discovery directory. If you're looking at saving volume-mounted source code files, you'd have to repeatedly do <code>podman quadlet install</code> for any new updates. So development-wise, <code>ln</code> is necessary. That, or simply do your application development straight in your quadlet discovery directory.</p>
+
+</details>
+<ol start="4">
+<li>Reload the system with <code>systemctl --user daemon-reload</code>.</li>
+<li>Confirm that quadlet picked it up with <code>podman quadlet list</code>. If all went well, you'll see your pod listed.</li>
+<li>Start the service with <code>systemctl --user restart example-app-dev-pod.service</code></li>
+<li>Confirm the service is running with <code>systemctl --user status example-app-dev.service</code>. <em>Notice</em> we aren't adding the <code>-pod</code> at the end.</li>
+</ol>
+</section>
+<h4 id="deployment">Deployment <a class="anchor" href="#deployment" aria-hidden="true">🔗</a></h4>
+<p>Fill this out</p>
+<details>
+    <summary role="button" class="secondary outline">what about quadlet install?</summary>
+    <p>The short answer is, eventually I think we should. I'm only on <em>Podman 5.8.7</em> (latest stable Fedora, as of this writing). On this version, <code>podman quadlet install</code> effectively copies over all your source code files into <a href="https://github.com/podman-container-tools/podman/blob/4c3027c149ad54dbb6f96328694e7b852623b4b8/pkg/domain/infra/abi/quadlet.go#L147-L162"><em>the base quadlet discovery directory</em></a>. If you're managing multiple services/quadlets, this would fill up full of <code>.container</code>'s and <code>.pods</code> pretty fast! To solve this, they add an <code>.app</code> file to denote which <code>.container</code> files belong to which, but this seems incredibly messy to me. Fortunately, they've changed this in Podman 6, and allow services to be grouped under different directory names <a href="https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#application-string">(via the <code>--application</code> flag)</a>.</p>
+<p>In other words, once Fedora upgrades, I'd go with something like <code>podman quadlet install --application=&quot;example-app-dev&quot; ..</code> instead.</p>
+
+</details>
+<h4 id="final-thoughts">Final Thoughts <a class="anchor" href="#final-thoughts" aria-hidden="true">🔗</a></h4>
+<p>Honestly, I prefer the k8-style workflow over this. The idea of linking my project subdirectory into an arbitrary system path to start my service just feels so, <em>alien</em>. Even with the changes to Podman 6 and the <code>--application</code> flag, it feels like an odd workflow. One thing the INI-style quadlet workflow has is it <em>feels</em> &quot;closer to the metal&quot;. Having everything already written in a systemd-INI files is a pretty close representation of what actually gets loaded by systemd. Whereas with <code>podman kube play</code>, I honestly have no idea what those units look like.</p>
+]]></content:encoded>
+      <pubDate>Sun, 27 Sep 2026 00:00:00 +0000</pubDate>
+      <category>podman</category>
+      <category>web</category>
+      <category>linux</category>
+      <category>general</category>
+    </item>
+    <item>
       <title>Why Podman?</title>
       <link>http://127.0.0.1:3000/blog/why_podman/</link>
       <guid>http://127.0.0.1:3000/blog/why_podman/</guid>
