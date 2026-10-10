@@ -314,7 +314,7 @@ hr {
 }
 
 .post-content > ol {
-    padding-left: 0;
+    padding-left: var(--pico-spacing);
 }
 
 .post-tags {

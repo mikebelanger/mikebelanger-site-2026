@@ -15,8 +15,8 @@
     <img id="mike" src="http://127.0.0.1:3000/img/md_mikeb.jpg" alt="me"></img>
 <section>
     <h2>Hi, I'm Mike</h2>
-    <p>I'm a developer who writes geospatial applications. I work with <a href="https://openlayers.org">OpenLayers</a>, <a href="https://qgis.org">QGIS</a>, <a href="https://leafletjs.com">Leaflet</a>, and the pipelines feeding them. <a href="https://react.dev">React</a> and <a href="https://typescriptlang.org">TypeScript</a> on the front, <a href="https://nodejs.org">Node.js</a> and <a href="https://python.org">Python</a> on the back, with <a href="https://rubyonrails.org">Ruby on Rails</a> earlier on. Lately I've been picking up <a href="https://crystal-lang.org">Crystal</a> and <a href="https://rust-lang.org">Rust</a>.</p>
-<p>I came to software from a <a href="https://carleton.ca/cognitivescience/bachelors-of-cognitive-science/">cognitive science</a> degree, working on attention models and eye-tracking.</p>
+    <p>I'm a cognitive scientist turned software developer. I have 8 years of experience building systems that measure things well.</p>
+<p>I started in attention and eye-tracking research, then moved into software development. I've done similar work the whole time: figuring out what to measure, how to sample it fairly, and how to tell signal from noise. My day job is the middle layer — turning messy inputs into trustworthy data and building the test infrastructure that tells you whether something actually works.</p>
 
 </section>
 </section>
@@ -29,7 +29,6 @@
 
 </hgroup>
 <ul>
-<li>Obtained “Secret” security clearance.</li>
 <li>Developed React-based frontends with OpenLayers in TypeScript, prioritizing user experience and maintainable code.</li>
 <li>Modified Node.js back end to interface with various microservices, ensuring code maintainability.</li>
 </ul>
@@ -39,7 +38,6 @@
 
 </hgroup>
 <ul>
-<li>Obtained “Secret” security clearance.</li>
 <li>Created React-based web interfaces in TypeScript for classified defense projects, focusing on intuitive UX and maintainable code.</li>
 <li>Scoped out the implementation of various geospatial-related pages.</li>
 <li>Enhanced React Native mobile interfaces for a retail workforce application.</li>
