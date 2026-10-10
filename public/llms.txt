@@ -10,6 +10,5 @@
 ## Blog
 
 - [Mixing instances of parent and child in Crystal](http://127.0.0.1:3000/blog/crystal_oo_types/): A strange error message from the Crystal compiler.
-- [INI-style quadlets: a developer's perspective](http://127.0.0.1:3000/blog/ini_quadlets_dev/): A Quick Overview of Using Podman Quadlets
 - [Why Podman?](http://127.0.0.1:3000/blog/why_podman/): My experiences with using Podman
 

@@ -6,9 +6,10 @@ description = "Mike Belanger — Full-stack developer based in Ottawa, Canada."
 +++
 
 {% welcome(strong="Hi, I'm Mike", src="/img/md_mikeb.jpg", alt="me") %}
-I'm a developer who writes geospatial applications. I work with [OpenLayers](https://openlayers.org), [QGIS](https://qgis.org), [Leaflet](https://leafletjs.com), and the pipelines feeding them. [React](https://react.dev) and [TypeScript](https://typescriptlang.org) on the front, [Node.js](https://nodejs.org) and [Python](https://python.org) on the back, with [Ruby on Rails](https://rubyonrails.org) earlier on. Lately I've been picking up [Crystal](https://crystal-lang.org) and [Rust](https://rust-lang.org).
+I'm a cognitive scientist turned software developer. I have 8 years of experience building systems that measure things well.
 
-I came to software from a [cognitive science](https://carleton.ca/cognitivescience/bachelors-of-cognitive-science/) degree, working on attention models and eye-tracking.
+I started in attention and eye-tracking research, then moved into software development. I've done similar work the whole time: figuring out what to measure, how to sample it fairly, and how to tell signal from noise. My day job is the middle layer — turning messy inputs into trustworthy data and building the test infrastructure that tells you whether something actually works.
+
 {% end %}
 ## Experience
 ---
@@ -16,7 +17,6 @@ I came to software from a [cognitive science](https://carleton.ca/cognitivescien
 ### Software Developer
 #### [Kongsberg Geospatial](https://www.kongsberggeospatial.com) · May 2024 – Present · Ottawa, Canada
 {% end %}
-- Obtained “Secret” security clearance.
 - Developed React-based frontends with OpenLayers in TypeScript, prioritizing user experience and maintainable code.
 - Modified Node.js back end to interface with various microservices, ensuring code maintainability.
 
@@ -25,7 +25,6 @@ I came to software from a [cognitive science](https://carleton.ca/cognitivescien
 #### [IMRSV Data Labs](https://www.imrsv.ai) · Dec 2020 – Aug 2023 · Ottawa, Canada
 {% end %}
 
-- Obtained “Secret” security clearance.
 - Created React-based web interfaces in TypeScript for classified defense projects, focusing on intuitive UX and maintainable code.
 - Scoped out the implementation of various geospatial-related pages.
 - Enhanced React Native mobile interfaces for a retail workforce application.

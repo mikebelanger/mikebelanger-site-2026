@@ -4,8 +4,8 @@ date = "2026-09-27"
 tags = ["podman", "web", "linux"]
 categories = ["general"]
 authors = ["mike"]
-description = "A Quick Overview of Using Podman Quadlets"
-
+description = "A Quick Overview of Using Podman Quadlets For Web Development"
+draft = true
 [cascade.extra]
 insert_anchor_links = true
 +++
@@ -80,7 +80,6 @@ WantedBy=default.target
 
 {% summary(summary = "NOTES") %}
 ##### Important Concepts:
-{% listicle() %}
 1. ###### These aren't the actual files systemd runs
 These files get translated (the technical term is "lowered") into other, *actual* systemd files for systemd to bootstrap. I like to think of the relationship quadlet files to systemd files like the relationship of SASS files to CSS, or React's JSX files to JS. While the syntax of quadlets is similar to what it gets compiled into, it isn't identical. To anyone less familiar with "pure" systemd, its difficult to distinguish between quadlet and systemd-specific declarations.
 
@@ -89,13 +88,11 @@ I'm used to cloning repos onto any path on my disk, doing `docker-compose up` in
 
 Fortunately, your application code *can* live in any directory you'd like, provided that directory gets copied/symlinked over into one of the quadlet discovery paths. A quick `ln -sfn "$PWD/containers" "$QUADLET_DIR/ini_style_quadlet"` (super intuitive, I know) should  do the trick.
 {% end %}
-{% end %}
 
 #### Dev Workflow:
-{% listicle() %}
 1. Clone the repo.
-2. Find your systemd discovery path. On most systems, that resolves to `${XDG_CONFIG_HOME:-$HOME/.config}/containers/systemd`. So something like `~/.config/containers/systemd`. (If you're doing rootless, which I am)
-3. `cd` into your repo, and link up the repo's subdirs into your quadlet discovery path:
+1. Find your systemd discovery path. On most systems, that resolves to `${XDG_CONFIG_HOME:-$HOME/.config}/containers/systemd`. So something like `~/.config/containers/systemd`. (If you're doing rootless, which I am)
+1. `cd` into your repo, and link up the repo's subdirs into your quadlet discovery path:
 ```sh
 cd project-dir
 ln -sfn "$PWD/dev" ~/.config/containers/systemd/dev
@@ -106,17 +103,40 @@ Yeah, I'm not a fan of sym-linking over like this either.
 
 Some of you might ask why not just use [`podman quadlet install`](https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#name), which is designed to make an "easy installation". In terms of development, `podman quadlet install` copies over files into the discovery directory. If you're looking at saving volume-mounted source code files, you'd have to repeatedly do `podman quadlet install` for any new updates. So development-wise, `ln` is necessary. That, or simply do your application development straight in your quadlet discovery directory.
 {% end %}
-4. Reload the system with `systemctl --user daemon-reload`.
-5. Confirm that quadlet picked it up with `podman quadlet list`. If all went well, you'll see your pod listed.
-6. Start the service with `systemctl --user restart example-app-dev-pod.service`
-7. Confirm the service is running with `systemctl --user status example-app-dev.service`. *Notice* we aren't adding the `-pod` at the end.
-{% end %}
+
+Now reload systemd with this new application, and confirm all is well
+```sh
+# Reload the system with
+systemctl --user daemon-reload
+
+# Confirm that quadlet picked it up with `podman quadlet list`. If all went well, you'll see your pod listed.
+podman quadlet list
+
+# Start the service
+systemctl --user restart example-app-dev-pod.service
+
+# Check the status of the service
+systemctl --user status example-app-dev.service
+
+# BONUS: If you'd prefer this always be on when logging in, ensure loginctl enables this to start on every new login
+sudo loginctl enable-linger $USER
+```
+
+### Now to the actual developing!
+The main sources files under `app` are volume-mounted, so go ahead, start changing `main.js`, for example. Reload the browser to see the effects change.
 
 #### Deployment
+1. Pretty much the same as above, except `cp` instead of link
+
+```sh
+# Copy application code and production container definitions
+cp -rf app ~/.config/containers/systemd/.
+cp -rf prod ~/.config/containers/systemd/.
+```
 
 Fill this out
-{% summary(summary = "what about quadlet install?")%}
-The short answer is, eventually I think we should. I'm only on *Podman 5.8.7* (latest stable Fedora, as of this writing). On this version, `podman quadlet install` effectively copies over all your source code files into [*the base quadlet discovery directory*](https://github.com/podman-container-tools/podman/blob/4c3027c149ad54dbb6f96328694e7b852623b4b8/pkg/domain/infra/abi/quadlet.go#L147-L162). If you're managing multiple services/quadlets, this would fill up full of `.container`'s and `.pods` pretty fast! To solve this, they add an `.app` file to denote which `.container` files belong to which, but this seems incredibly messy to me. Fortunately, they've changed this in Podman 6, and allow services to be grouped under different directory names [(via the `--application` flag)](https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#application-string).
+{% summary(summary = "WHAT ABOUT QUADLET INSTALL?")%}
+The short answer is, eventually I think we should. I'm only on *Podman 5.8.7* (for the latest stable Fedora, as of this writing). On this version, `podman quadlet install` effectively copies over all your source code files into [*the base quadlet discovery directory*](https://github.com/podman-container-tools/podman/blob/4c3027c149ad54dbb6f96328694e7b852623b4b8/pkg/domain/infra/abi/quadlet.go#L147-L162). If you're managing multiple services/quadlets, this would fill up full of `.container`'s and `.pods` pretty fast! To solve this, they add an `.app` file to denote which `.container` files belong to which, but this seems incredibly messy to me. Fortunately, they've changed this in Podman 6, and allow services to be grouped under different directory names [(via the `--application` flag)](https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#application-string).
 
 In other words, once Fedora upgrades, I'd go with something like `podman quadlet install --application="example-app-dev" ..` instead.
 
@@ -124,4 +144,4 @@ In other words, once Fedora upgrades, I'd go with something like `podman quadlet
 
 #### Final Thoughts
 
-Honestly, I prefer the k8-style workflow over this. The idea of linking my project subdirectory into an arbitrary system path to start my service just feels so, *alien*. Even with the changes to Podman 6 and the `--application` flag, it feels like an odd workflow. One thing the INI-style quadlet workflow has is it *feels* "closer to the metal". Having everything already written in a systemd-INI files is a pretty close representation of what actually gets loaded by systemd. Whereas with `podman kube play`, I honestly have no idea what those units look like.
+Honestly, I prefer the k8-style workflow over this. The idea of linking my project subdirectory into an arbitrary system path to start my service just feels so, *alien*. Even with the changes to Podman 6 and the `--application` flag, it feels like an odd workflow. One thing the INI-style quadlet workflow has is it *feels* "closer to the metal". Having everything already written in a systemd-INI files is a pretty close representation of what actually gets loaded by systemd. Whereas with `podman kube play`, I making some guesses as to what those units look like.
