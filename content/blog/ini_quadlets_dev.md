@@ -5,7 +5,7 @@ tags = ["podman", "web", "linux"]
 categories = ["general"]
 authors = ["mike"]
 description = "A Quick Overview of Using Podman Quadlets For Web Development"
-draft = true
+draft = false
 [cascade.extra]
 insert_anchor_links = true
 +++
@@ -14,7 +14,7 @@ insert_anchor_links = true
 
 [Podman's](https://podman.io/) [Quadlet feature](https://docs.podman.io/en/stable/markdown/podman-quadlet.1.html) allow podman containers to be integrated into [systemd](https://systemd.io/) services. 
 
-Why manage containers with systemd? You might argue that containers are better orchestrated with [Docker Swarm](https://docs.docker.com/engine/swarm/), [Kubernetes](https://kubernetes.io/), or even [Ansible](https://www.ansible.com/).  That is true for larger installations. For a single Linux box or VPS, systemd is probably running on it already. I couldn't summarize it better than Elias Bourgess: [it's the control pane you already run.](https://ebourgess.dev/posts/podman-quadlet-production/#the-control-plane-you-already-run).
+Why manage containers with systemd? You might argue that containers are better orchestrated with [Docker Swarm](https://docs.docker.com/engine/swarm/), [Kubernetes](https://kubernetes.io/), or even [Ansible](https://www.ansible.com/).  That is true for larger installations. For a single Linux box or VPS, systemd is probably running on it already. I couldn't summarize it better than Elias Bourgess: [it's the control pane you already run](https://ebourgess.dev/posts/podman-quadlet-production/#the-control-plane-you-already-run).
 
 There's two ways to write Quadlets:
 - [INI-style quadlet definitions.](https://www.redhat.com/en/blog/quadlet-podman.) An extension of systemd's INI-style config language. This adds sections for things [like containers and volumes](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html). This approach is for Linux system administrators who are already familiar with systemd.
@@ -44,8 +44,10 @@ Here's a minimal setup for a nodejs application:
 ├── prod
 │   ├── example-app.container
 │   └── example-app.pod
+├── public
 └── README.md
 ```
+
 The quadlet-specific files here are under the `dev` and `prod` subdirectories for development and production, respectively. Here's a look at the ones in `dev`:
 
 `dev/example-app-dev.container`:
@@ -59,6 +61,7 @@ Image=docker.io/node:24
 WorkingDir=/app
 Exec=/bin/sh -c "npm i && node --watch index.js"
 Volume=../app:/app:Z
+Environment=PORT=3001
 
 [Install]
 WantedBy=multi-user.target
@@ -70,16 +73,18 @@ WantedBy=multi-user.target
 Description=Development version of example app
 
 [Pod]
-PodName=example-app-dev-pod
+PodName=example-app-dev
 ExitPolicy=stop
-PublishPort=3002:3002
+PublishPort=3001:3001
 
 [Install]
 WantedBy=default.target
 ```
+{% summary(summary = "Why wrap one container in a Pod?")%}
+You may be wondering why it's wrapped in a Pod. For this example, the Pod is indeed overkill. Once other containers get added to your app (a Postgres db container, a Redis cache layer, reverse-proxy, etc) pods do make it easier to manage containers, and keep them all talking to each-other with relative ease. This is because containers on the same pod can all access each-other via `localhost:PORT`, and not worry about whatever host addresses are already in use. Furthermore, at the pod-level, only the port that needs access from the outside world (say, a reverse proxy's container port), while the other containers' ports are effectively closed off. 
+{% end %}
 
 {% summary(summary = "NOTES") %}
-##### Important Concepts:
 1. ###### These aren't the actual files systemd runs
 These files get translated (the technical term is "lowered") into other, *actual* systemd files for systemd to bootstrap. I like to think of the relationship quadlet files to systemd files like the relationship of SASS files to CSS, or React's JSX files to JS. While the syntax of quadlets is similar to what it gets compiled into, it isn't identical. To anyone less familiar with "pure" systemd, its difficult to distinguish between quadlet and systemd-specific declarations.
 
@@ -95,25 +100,22 @@ Fortunately, your application code *can* live in any directory you'd like, provi
 1. `cd` into your repo, and link up the repo's subdirs into your quadlet discovery path:
 ```sh
 cd project-dir
-ln -sfn "$PWD/dev" ~/.config/containers/systemd/dev
-ln -sfn "$PWD/app" ~/.config/containers/systemd/app
+
+# symlink the entire project directory over. Note that "example-app" can be anything, and should be uniquely named
+# to prevent clashes with other systemd services
+ln -sfn "$PWD" ~/.config/containers/systemd/example-app
 ```
-{% summary(summary = "WHAT?") %}
-Yeah, I'm not a fan of sym-linking over like this either.
-
-Some of you might ask why not just use [`podman quadlet install`](https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#name), which is designed to make an "easy installation". In terms of development, `podman quadlet install` copies over files into the discovery directory. If you're looking at saving volume-mounted source code files, you'd have to repeatedly do `podman quadlet install` for any new updates. So development-wise, `ln` is necessary. That, or simply do your application development straight in your quadlet discovery directory.
-{% end %}
-
 Now reload systemd with this new application, and confirm all is well
 ```sh
-# Reload the system with
+# This rebuilds the quadlets -> actual systemd runtime files
 systemctl --user daemon-reload
 
 # Confirm that quadlet picked it up with `podman quadlet list`. If all went well, you'll see your pod listed.
 podman quadlet list
 
-# Start the service
-systemctl --user restart example-app-dev-pod.service
+# Will probably give you something like
+# example-app.container      example-app.service          /your/dev-dir/prod/example-app.container     active/running  .example-app.container.app
+# example-app.pod            example-app-pod.service      /your/dev-dir/prod/example-app.pod           active/running  .example-app.container.app
 
 # Check the status of the service
 systemctl --user status example-app-dev.service
@@ -121,20 +123,69 @@ systemctl --user status example-app-dev.service
 # BONUS: If you'd prefer this always be on when logging in, ensure loginctl enables this to start on every new login
 sudo loginctl enable-linger $USER
 ```
-
 ### Now to the actual developing!
 The main sources files under `app` are volume-mounted, so go ahead, start changing `main.js`, for example. Reload the browser to see the effects change.
 
-#### Deployment
-1. Pretty much the same as above, except `cp` instead of link
+#### Deployment Workflow
 
-```sh
-# Copy application code and production container definitions
-cp -rf app ~/.config/containers/systemd/.
-cp -rf prod ~/.config/containers/systemd/.
+If you're deploying to the same system you develop on, then all you're really doing is `COPY`ing the node source files instead of volume-mounting. If you're using Typescript or anything else requiring compilation, you'll have to add that to your `Containerfile` too.
+
+`prod/example-app.container`:
+```ini
+[Unit]
+Description=Example Node.js app
+
+[Container]
+Pod=example-app.pod
+Image=example-app.build
+WorkingDir=/app
+Exec=/bin/sh -c "node index.js"
+Environment=PORT=3005
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-Fill this out
+`prod/example-app.pod`:
+```ini
+[Unit]
+Description=Production version of example app
+
+[Pod]
+PodName=example-app-pod
+ExitPolicy=stop
+PublishPort=3005:3005
+
+[Install]
+WantedBy=default.target
+```
+`prod/Containerfile`:
+```Dockerfile
+FROM docker.io/library/node:24-alpine
+
+WORKDIR /app
+
+COPY app/ /app/
+```
+
+`prod/example-app.build`:
+```ini
+[Build]
+ImageTag=localhost/example-app
+File=Containerfile
+SetWorkingDirectory=..
+```
+You've already linked the production files over, its just a matter of rebuilding.
+
+```sh
+# Rebuilds any necessary files
+systemctl --user daemon-reload
+
+# Start the production service
+systemctl --user start example-app.service
+```
+Point a browser at `localhost:3005` and you should see your production app!
+
 {% summary(summary = "WHAT ABOUT QUADLET INSTALL?")%}
 The short answer is, eventually I think we should. I'm only on *Podman 5.8.7* (for the latest stable Fedora, as of this writing). On this version, `podman quadlet install` effectively copies over all your source code files into [*the base quadlet discovery directory*](https://github.com/podman-container-tools/podman/blob/4c3027c149ad54dbb6f96328694e7b852623b4b8/pkg/domain/infra/abi/quadlet.go#L147-L162). If you're managing multiple services/quadlets, this would fill up full of `.container`'s and `.pods` pretty fast! To solve this, they add an `.app` file to denote which `.container` files belong to which, but this seems incredibly messy to me. Fortunately, they've changed this in Podman 6, and allow services to be grouped under different directory names [(via the `--application` flag)](https://docs.podman.io/en/stable/markdown/podman-quadlet-install.1.html#application-string).
 
@@ -144,4 +195,6 @@ In other words, once Fedora upgrades, I'd go with something like `podman quadlet
 
 #### Final Thoughts
 
-Honestly, I prefer the k8-style workflow over this. The idea of linking my project subdirectory into an arbitrary system path to start my service just feels so, *alien*. Even with the changes to Podman 6 and the `--application` flag, it feels like an odd workflow. One thing the INI-style quadlet workflow has is it *feels* "closer to the metal". Having everything already written in a systemd-INI files is a pretty close representation of what actually gets loaded by systemd. Whereas with `podman kube play`, I making some guesses as to what those units look like.
+Honestly, I prefer the k8-style workflow over this. The idea of linking my project subdirectory into an arbitrary system path to start my service just feels so, *alien*. Even with the changes to Podman 6 and the `--application` flag, it feels like an odd workflow. 
+
+On the flipside, INI-style quadlets *feel* "closer to the metal". Having everything already written in a systemd-INI files is a pretty close representation of what actually gets loaded by systemd. There's a movement in the frontend ecosystem which eschews elaborate frameworks for plain "vanilla" javascript, and to [just use the platform](https://elisehe.in/2021/08/22/using-the-platform). I felt like there was a parallel to be found with Quadlets, and that was worth exploring.
