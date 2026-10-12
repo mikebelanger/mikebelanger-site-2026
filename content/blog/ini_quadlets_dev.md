@@ -1,10 +1,10 @@
 +++
 title = "Quadlets: A Developer's Perspective"
 date = "2026-10-12"
-tags = ["podman", "web", "linux"]
+tags = ["podman", "web", "linux", "oci", "devops", "selfhosting"]
 categories = ["general"]
 authors = ["mike"]
-description = "A Quick Overview of Using Podman Quadlets For Web Development"
+description = "An overview of using Podman Quadlets for web development"
 [cascade.extra]
 insert_anchor_links = true
 +++
