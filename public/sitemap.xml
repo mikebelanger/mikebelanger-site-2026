@@ -59,6 +59,21 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>http://127.0.0.1:3000/tags/oci/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:3000/tags/devops/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:3000/tags/selfhosting/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>http://127.0.0.1:3000/tags/home/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

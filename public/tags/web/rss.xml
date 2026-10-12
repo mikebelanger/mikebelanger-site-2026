@@ -9,7 +9,7 @@
       <title>Quadlets: A Developer&apos;s Perspective</title>
       <link>http://127.0.0.1:3000/blog/ini_quadlets_dev/</link>
       <guid>http://127.0.0.1:3000/blog/ini_quadlets_dev/</guid>
-      <description>A Quick Overview of Using Podman Quadlets For Web Development</description>
+      <description>An overview of using Podman Quadlets for web development</description>
       <content:encoded><![CDATA[<h5 id="introduction">Introduction <a class="anchor" href="#introduction" aria-hidden="true">🔗</a></h5>
 <p><a href="https://podman.io/">Podman's</a> <a href="https://docs.podman.io/en/stable/markdown/podman-quadlet.1.html">Quadlet feature</a> allows podman containers to be integrated into <a href="https://systemd.io/">systemd</a> services.</p>
 <p>Why manage containers with systemd? You might argue that containers are better orchestrated with <a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a>, <a href="https://kubernetes.io/">Kubernetes</a>, or even <a href="https://www.ansible.com/">Ansible</a>.  That is true for larger installations. For a single Linux box or VPS, systemd is probably running on it already. I couldn't summarize it better than Elias Bourgess: <a href="https://ebourgess.dev/posts/podman-quadlet-production/#the-control-plane-you-already-run">it's the control pane you already run</a>.</p>
@@ -202,6 +202,9 @@ systemctl --user restart example-app.service
       <category>podman</category>
       <category>web</category>
       <category>linux</category>
+      <category>oci</category>
+      <category>devops</category>
+      <category>selfhosting</category>
       <category>general</category>
     </item>
     <item>
